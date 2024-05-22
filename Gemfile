@@ -1,3 +1,5 @@
+gem 'dotenv', groups: [:development, :test]
+
 source "https://rubygems.org"
 
 ruby "3.2.3"

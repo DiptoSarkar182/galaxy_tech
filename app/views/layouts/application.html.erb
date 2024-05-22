@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GalaxyTech</title>
+    <title>Galaxy Tech</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -16,6 +16,9 @@
   </div>
   <div>
     <% if user_signed_in? %>
+      <div>
+        Hello, <%= current_user.full_name %>
+      </div>
       <div>
         <%= button_to "Log Out", destroy_user_session_url, method: "delete" %>
       </div>
