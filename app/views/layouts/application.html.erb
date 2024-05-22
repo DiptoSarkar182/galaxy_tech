@@ -11,6 +11,39 @@
   </head>
 
   <body>
+  <div>
+    <%= link_to 'Galaxy Tech', root_path %>
+  </div>
+  <div>
+    <% if user_signed_in? %>
+      <div>
+        <%= button_to "Log Out", destroy_user_session_url, method: "delete" %>
+      </div>
+      <%else %>
+      <div>
+        <%= button_to "Log In", new_user_session_url, method: "get" %>
+      </div>
+
+      <div>
+        <%= button_to "Sign Up", new_user_registration_url, method: "get" %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if alert || notice %>
+
+    <div >
+      <% if notice %>
+        <p><%= notice %></p>
+      <% end %>
+
+      <% if alert %>
+        <p><%= alert %></p>
+      <% end %>
+    </div>
+
+  <% end %>
+
     <%= yield %>
   </body>
 </html>
