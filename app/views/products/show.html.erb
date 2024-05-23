@@ -1,19 +1,40 @@
-<% if @product.product_image.attached? %>
-  <div>
-<%= image_tag @product.product_image %>
-  </div>
-<% end %>
+<div>
+  <% if current_user && current_user.admin? %>
+    <%= link_to "Edit", edit_product_path(@product) %>
+    <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+  <% end %>
+</div>
+
+<div>
+  <% if @product.product_image.attached? %>
+    <div>
+      <%= image_tag @product.product_image %>
+    </div>
+  <% end %>
+</div>
 
 <div>
   Name: <%= @product.name %>
 </div>
 
 <div>
-  Price: <%= @product.price %>
+  Price: <%= number_with_delimiter(number_with_precision(@product.price, precision: 2), delimiter: ',') %> BDT
 </div>
 
 <div>
-  Quantity: <%= @product.quantity %>
+  <% if current_user && current_user.admin? %>
+    Quantity: <%= @product.quantity %>
+  <% else %>
+    <% if @product.quantity > 0 %>
+      <% if @product.quantity <= 5 %>
+        Status: Only <%= @product.quantity %> are left in the stock
+      <% else %>
+        Status: In stock
+      <% end %>
+    <% else %>
+      Status: Out of stock
+    <% end %>
+  <% end %>
 </div>
 
 <div>
@@ -30,8 +51,4 @@
 
 <div>
   Description: <%= @product.description %>
-</div>
-<div>
-  <%= link_to "Edit", edit_product_path(@product) %>
-  <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

@@ -1,6 +1,8 @@
 class ProductsController < ApplicationController
-  def index
 
+  before_action :authenticate_admin, only: [:edit, :create, :update]
+  def index
+    @products = Product.all
   end
 
   def new
@@ -37,7 +39,9 @@ class ProductsController < ApplicationController
     end
   end
   def destroy
-
+    @product = Product.find(params[:id])
+    @product.destroy
+    redirect_to admin_dashboards_path, notice: "Product deleted successfully!"
   end
 
   private
@@ -45,6 +49,12 @@ class ProductsController < ApplicationController
   def product_params
     params.require(:product).permit(:name, :price, :quantity, :brand, :key_features,
                                     :specification, :description, :product_image)
+  end
+
+  def authenticate_admin
+    unless current_user&.admin?
+      redirect_to root_path, alert: 'Access denied!'
+    end
   end
 
 end
