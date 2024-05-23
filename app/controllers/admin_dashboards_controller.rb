@@ -1,29 +1,9 @@
 class AdminDashboardsController < ApplicationController
 
-  before_action :authenticate_admin
+  before_action :authenticate_admin, only: [:index]
 
   def index
-
-  end
-
-  def new
-
-  end
-
-  def create
-
-  end
-
-  def edit
-
-  end
-
-  def update
-
-  end
-
-  def destroy
-
+    @products = Product.order(quantity: :desc)
   end
 
 
@@ -35,9 +15,5 @@ class AdminDashboardsController < ApplicationController
     end
   end
 
-  def product_params
-    params.require(:product).permit(:name, :price, :quantity, :brand, :key_features,
-                                    :specification, :description)
-  end
 
 end

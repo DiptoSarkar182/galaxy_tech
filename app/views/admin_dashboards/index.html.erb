@@ -1,1 +1,13 @@
-hello from admin dashboard
+<h1>hello from admin dashboard</h1>
+
+<div>
+  <%= link_to "Add new product", new_product_path %>
+</div>
+
+<div>All the products</div>
+
+<div >
+  <% @products.each do |product| %>
+    <%= render 'admin_dashboards/product', product: product %>
+  <% end %>
+</div>

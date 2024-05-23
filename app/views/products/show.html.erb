@@ -1,0 +1,37 @@
+<% if @product.product_image.attached? %>
+  <div>
+<%= image_tag @product.product_image %>
+  </div>
+<% end %>
+
+<div>
+  Name: <%= @product.name %>
+</div>
+
+<div>
+  Price: <%= @product.price %>
+</div>
+
+<div>
+  Quantity: <%= @product.quantity %>
+</div>
+
+<div>
+  Brand: <%= @product.brand %>
+</div>
+
+<div>
+  Key Features: <%= @product.key_features %>
+</div>
+
+<div>
+  Specification: <%= @product.specification %>
+</div>
+
+<div>
+  Description: <%= @product.description %>
+</div>
+<div>
+  <%= link_to "Edit", edit_product_path(@product) %>
+  <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+</div>
