@@ -8,6 +8,9 @@ class Product < ApplicationRecord
   has_rich_text :description
   has_one_attached :product_image
 
+  has_many :cart_items
+  has_many :carts, through: :cart_items
+
   before_destroy :purge_product_image
   before_update :purge_product_image, if: :product_image_changed?
 

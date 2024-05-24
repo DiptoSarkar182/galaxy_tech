@@ -42,6 +42,15 @@
 </div>
 
 <div>
+  <% if current_user.cart&.products&.include?(@product) %>
+    <%= button_to "Increase Quantity", increase_quantity_product_cart_item_path(@product, current_user.cart.cart_items.find_by(product: @product)), method: :post %>
+    <%= button_to "Decrease Quantity", decrease_quantity_product_cart_item_path(@product, current_user.cart.cart_items.find_by(product: @product)), method: :post %>
+  <% else %>
+    <%= button_to "Add to cart", product_cart_items_path(@product), method: :post %>
+  <% end %>
+</div>
+
+<div>
   Key Features: <%= @product.key_features %>
 </div>
 
