@@ -22,6 +22,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    @cart = current_user.cart if user_signed_in?
   end
 
   def edit
