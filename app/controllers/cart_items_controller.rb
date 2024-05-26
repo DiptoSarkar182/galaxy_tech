@@ -8,7 +8,6 @@ class CartItemsController < ApplicationController
     @cart_item = @cart.cart_items.new(product: @product, quantity: 1)
 
     if @cart_item.save
-      # redirect_to product_path(@product)
       render partial: "products/add_to_cart_increase_decrease_quantity", locals: { product: @product }
     else
       redirect_to product_path(@product), alert: 'There was an error adding the product to the cart.'

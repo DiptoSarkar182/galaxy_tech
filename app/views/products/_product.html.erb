@@ -11,5 +11,9 @@
 </div>
 
 <div>
-  <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT
+  <% if product.quantity.zero? %>
+    OUT OF STOCK
+  <% else %>
+    <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT
+  <% end %>
 </div>

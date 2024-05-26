@@ -18,7 +18,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :carts
+  resources :carts do
+    member do
+      post :increase_quantity
+      post :decrease_quantity
+    end
+  end
 
   resources :admin_dashboards
 

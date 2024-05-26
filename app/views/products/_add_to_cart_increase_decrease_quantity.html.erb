@@ -1,15 +1,30 @@
 <turbo-frame id="add_to_cart_increase_decrease_quantity">
   <div>
     <% if user_signed_in? %>
-      <div>You have <%= current_user.cart&.cart_items&.sum(:quantity) || 0 %> product(s) in your cart.</div>
+      <div>
+        <% if @cart && @cart.cart_items.sum(:quantity) > 0 %>
+          You have <%= link_to "#{@cart.cart_items.sum(:quantity)} product(s) in your cart.", carts_path, data: {turbo_frame: "_top"} %>
+        <% else %>
+          Your cart is empty.
+        <% end %>
+      </div>
       <div>Total price: <%= number_to_currency(current_user.cart&.total_price || 0, unit: '৳', format: "%n%u") %></div>
     <% end %>
   </div>
 
   <% if current_user && current_user.cart&.products&.include?(product) %>
-    <%= button_to "Increase Quantity", increase_quantity_product_cart_item_path(product, current_user.cart.cart_items.find_by(product: product)), method: :post %>
+    <% cart_item = current_user.cart.cart_items.find_by(product: product) %>
+    <% if cart_item.quantity >= product.quantity %>
+      <button disabled>Increase Quantity</button>
+    <% else %>
+      <%= button_to "Increase Quantity", increase_quantity_product_cart_item_path(product, cart_item), method: :post %>
+    <% end %>
     <%= button_to "Decrease Quantity", decrease_quantity_product_cart_item_path(product, current_user.cart.cart_items.find_by(product: product)), method: :post %>
   <% else %>
-    <%= button_to "Add to cart", product_cart_items_path(product), method: :post %>
+    <% if product.quantity.zero? %>
+      <button disabled>OUT OF STOCK</button>
+    <% else %>
+      <%= button_to "Add to cart", product_cart_items_path(product), method: :post %>
+    <% end %>
   <% end %>
 </turbo-frame>

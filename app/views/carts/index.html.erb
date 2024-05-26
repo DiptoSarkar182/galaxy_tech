@@ -1,0 +1,25 @@
+<turbo-frame id="increase_decrease_product">
+  <% if @cart && @cart.cart_items.any? %>
+    <% @cart.cart_items.order(:id).each do |cart_item| %>
+      <div>
+        <div>Product Name: <%= cart_item.product.name %></div>
+        <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
+        <div>Quantity: <%= cart_item.quantity %></div>
+        <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '৳', format: "%n%u") %></div>
+      </div>
+      <div>
+        <% if cart_item.quantity >= cart_item.product.quantity %>
+          <button disabled>Increase Quantity</button>
+        <% else %>
+          <%= button_to "Increase Quantity", increase_quantity_cart_path(@cart, product_id: cart_item.product_id), method: :post %>
+        <% end %>
+        <%= button_to "Decrease Quantity", decrease_quantity_cart_path(@cart, product_id: cart_item.product_id), method: :post %>
+      </div>
+    <% end %>
+    <div>
+      <div>Grand Total: <%= number_to_currency(@cart.total_price, unit: '৳', format: "%n%u") %></div>
+    </div>
+  <% else %>
+    <p>Your cart is empty.</p>
+  <% end %>
+</turbo-frame>
