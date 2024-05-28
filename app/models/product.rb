@@ -1,5 +1,9 @@
 class Product < ApplicationRecord
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["name"]
+  end
+
   validate :product_image_size_under_limit
   validate :product_image_must_be_image
 
@@ -40,5 +44,7 @@ class Product < ApplicationRecord
   def product_image_changed?
     product_image.attached? && product_image.attachment.blob_id_changed?
   end
+
+
 
 end

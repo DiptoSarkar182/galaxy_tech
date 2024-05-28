@@ -45,6 +45,11 @@ class ProductsController < ApplicationController
     redirect_to admin_dashboards_path, notice: "Product deleted successfully!"
   end
 
+  def search_product
+    @q = Product.ransack(name_cont: params[:product_name])
+    @products = @q.result(distinct: true).page(params[:page]).per(5)
+  end
+
   private
 
   def product_params

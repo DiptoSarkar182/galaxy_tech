@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   root "products#index"
 
   resources :products do
+    collection do
+      get :search_product
+    end
     resources :cart_items do
       member do
         post :increase_quantity
