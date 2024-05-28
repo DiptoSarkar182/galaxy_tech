@@ -1,21 +1,106 @@
-<% if @cart && @cart.cart_items.any? %>
-  <% @cart.cart_items.order(:id).each do |cart_item| %>
-    <div>
-      <div>Product Name: <%= cart_item.product.name %></div>
-      <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
-      <div>Quantity: <%= cart_item.quantity %></div>
-      <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '৳', format: "%n%u") %></div>
-    </div>
-  <% end %>
+<div>
   <div>
-    <div>Your Total Price: <%= number_to_currency(@cart.total_price, unit: '৳', format: "%n%u") %></div>
+    <%= form_with(model: @user, url: orders_path, method: :post, local: true)  do |form| %>
+      <div>
+
+        <div>
+          1. Customer Information
+        </div>
+        <div>
+          Deliver to: <%= @user.full_name %>
+        </div>
+        <div>
+          Email to: <%= @user.email %>
+        </div>
+        <div>
+          <%= form.label :address %>
+          <%= form.text_area :address, autocomplete: "address" %>
+        </div>
+
+      </div>
+
+      <div>
+        <div>
+          2. Payment Method
+        </div>
+        <div>
+          <%= radio_button_tag 'payment_method', 'cash_on_delivery', true %> Cash on Delivery
+          <%= radio_button_tag 'payment_method', 'online_payment' %> Online Payment
+        </div>
+      </div>
+
+      <div>
+        <div>
+          3. Delivery Method
+        </div>
+        <div>
+          <%= radio_button_tag 'delivery_method', 'home_delivery', true, data: { cost: 60 } %> Home Delivery - 60৳
+          <%= radio_button_tag 'delivery_method', 'store_pickup', false, data: { cost: 0 } %> Store Pickup - 0৳
+        </div>
+      </div>
+
+      <div>
+        <div>
+          4. Order Overview
+        </div>
+        <div>
+          <% if @cart && @cart.cart_items.any? %>
+            <% @cart.cart_items.order(:id).each do |cart_item| %>
+              <div>
+                <div>Product Name: <%= cart_item.product.name %></div>
+                <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
+                <div>Quantity: <%= cart_item.quantity %></div>
+                <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '৳', format: "%n%u") %></div>
+              </div>
+            <% end %>
+
+            <div id="price-details">
+              <div id="product-total">Sub Total: <%= number_to_currency(@cart.total_price, unit: '৳', format: "%n%u") %></div>
+              <div id="delivery-cost">Delivery Cost: <%= number_to_currency(60, unit: '৳', format: "%n%u") %></div>
+              <div id="total-price">Your Total Price: <%= number_to_currency(@cart.total_price + 60 , unit: '৳', format: "%n%u") %></div>
+            </div>
+
+            <div>
+              <%= button_to "Confirm Order", orders_path, method: :post %>
+            </div>
+
+          <% else %>
+
+            <div>Your cart is empty.</div>
+            <div>
+
+              <%= link_to "Go to homepage", root_path, data: {turbo_frame: "_top"} %>
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    <% end %>
   </div>
-  <div>
-    <%= button_to "Confirm Order", orders_path, method: :post %>
-  </div>
-<% else %>
-  <div>Your cart is empty.</div>
-  <div>
-    <%= link_to "Go to homepage", root_path, data: {turbo_frame: "_top"} %>
-  </div>
-<% end %>
+
+</div>
+
+<script>
+    document.querySelectorAll('input[name="delivery_method"]').forEach((radio) => {
+        radio.addEventListener('change', function() {
+            const deliveryCost = parseInt(this.dataset.cost);
+            const totalPrice = <%= @cart.total_price %>;
+            const finalPrice = totalPrice + deliveryCost;
+
+            // Custom function to format number as currency
+            function formatCurrency(number) {
+                return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '৳';
+            }
+
+            const formattedFinalPrice = formatCurrency(finalPrice);
+            const formattedDeliveryCost = formatCurrency(deliveryCost);
+
+            document.getElementById('total-price').innerText = `Your Total Price: ${formattedFinalPrice}`;
+            document.getElementById('delivery-cost').innerText = `Delivery Cost: ${formattedDeliveryCost}`;
+        });
+    });
+</script>
+

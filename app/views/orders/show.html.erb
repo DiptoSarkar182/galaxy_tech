@@ -1,0 +1,74 @@
+<div>
+  Order ID: <%= @order.order_number %>
+</div>
+<div>
+  Placed on: <%= @order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
+</div>
+<div>
+  Order status: <%= @order.status %>
+</div>
+<div>
+  <% if @order.delivery_method == 'home_delivery' %>
+  <div>
+    Shipping address: <%= @order.delivery_address %>
+  </div>
+    <% else %>
+  <div>
+    Shipping address: Galaxy Tech Main Branch, Dhaka
+  </div>
+  <% end %>
+</div>
+
+<div>
+  Order summary
+</div>
+<div>
+  Products details
+  <div>
+    <ul>
+      <% @order.order_items.each do |item| %>
+        <li>
+          <%= item.product.name %>, Quantity: <%= item.quantity %>
+        </li>
+      <% end %>
+    </ul>
+
+  </div>
+</div>
+<div>
+  <% if @order.payment_method == 'cash_on_delivery' %>
+    <div>
+      Payment Method: CASH ON DELIVERY
+    </div>
+    <%else %>
+    <div>
+      Payment Method: ONLINE PAYMENT
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <% if @order.delivery_method == 'home_delivery' %>
+    <div>
+      Delivery Method: HOME DELIVERY
+    </div>
+  <%else %>
+    <div>
+      Delivery Method: STORE PICKUP
+    </div>
+  <% end %>
+</div>
+
+<div>
+  Total amount to pay: <%= number_to_currency(@order.total_price, unit: '৳', format: "%n%u") %>
+</div>
+
+<div>
+  <% if @order.status == 'pending' ||  @order.status == 'pending_payment' %>
+    <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+  <%else %>
+    <div>
+      Order cannot be canceled now.
+    </div>
+  <% end %>
+</div>

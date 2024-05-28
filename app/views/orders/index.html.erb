@@ -6,13 +6,10 @@
         Placed on: <%= order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
       </div>
       <div>
-        <% if order.status == 'pending' %>
-          <%= link_to "Delete", order_path(order), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-        <%else %>
-        <div>
-          Order cannot be canceled now.
-        </div>
-        <% end %>
+        Order status: <%= order.status %>
+      </div>
+      <div>
+        <%= button_to "View", order_path(order), method: :get %>
       </div>
       <ul>
         <% order.order_items.each do |item| %>
@@ -21,16 +18,6 @@
           </li>
         <% end %>
       </ul>
-      <div>
-        Status: <%= order.status %>
-      </div>
-      <div>
-        <% if order.payment_method == 'cash_on_delivery' %>
-        <div>
-          Payment Method: CASH ON DELIVERY
-        </div>
-        <% end %>
-      </div>
       <div>
         Total amount to pay: <%= number_to_currency(order.total_price, unit: '৳', format: "%n%u") %>
       </div>

@@ -10,6 +10,18 @@ class CartsController < ApplicationController
     end
   end
 
+  def destroy
+    cart_item = CartItem.find(params[:id])
+    cart = cart_item.cart
+    cart_item.destroy
+
+    if cart.cart_items.empty?
+      cart.destroy
+    end
+
+    render partial: "increase_decrease_product", locals: { cart: @cart }
+  end
+
 
   def increase_quantity
     @cart = Cart.find(params[:id])
