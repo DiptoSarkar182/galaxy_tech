@@ -50,11 +50,15 @@ class ProductsController < ApplicationController
     @products = @q.result(distinct: true).page(params[:page]).per(5)
   end
 
+  def search_product_by_component
+    @products = Product.where(component: params[:component]).page(params[:page]).per(5)
+  end
+
   private
 
   def product_params
     params.require(:product).permit(:name, :price, :quantity, :brand, :key_features,
-                                    :specification, :description, :product_image)
+                                    :specification, :description, :product_image, :component)
   end
 
   def authenticate_admin

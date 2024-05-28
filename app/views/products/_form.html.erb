@@ -35,6 +35,28 @@
     <%= form.text_field :brand, placeholder: "" %>
   </div>
 
+  <div>
+    <%= form.label "Which Component:" %>
+    <%= form.select :component, options_for_select([
+                                                     ["Processor", "Processor"],
+                                                     ["CPU Cooler", "CPU Cooler"],
+                                                     ["Water / Liquid Cooling", "Water / Liquid Cooling"],
+                                                     ["Motherboard", "Motherboard"],
+                                                     ["Graphics Card", "Graphics Card"],
+                                                     ["RAM (Desktop)", "RAM (Desktop)"],
+                                                     ["Ram (Laptop)", "Ram (Laptop)"],
+                                                     ["Power Supply", "Power Supply"],
+                                                     ["Hard Disk Drive", "Hard Disk Drive"],
+                                                     ["Portable Hard Disk Drive", "Portable Hard Disk Drive"],
+                                                     ["SSD", "SSD"],
+                                                     ["Portable SSD", "Portable SSD"],
+                                                     ["Casing", "Casing"],
+                                                     ["Casing Cooler", "Casing Cooler"],
+                                                     ["Monitor", "Monitor"],
+                                                     ["Phone", "Phone"]
+                                                   ].sort, selected: @product.component), include_blank: "Select Component" %>
+  </div>
+
   <div >
     <%= form.label "Key features:" %>
     <%= form.rich_text_area :key_features, placeholder: "" %>

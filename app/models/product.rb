@@ -4,6 +4,7 @@ class Product < ApplicationRecord
     ["name"]
   end
 
+
   validate :product_image_size_under_limit
   validate :product_image_must_be_image
 

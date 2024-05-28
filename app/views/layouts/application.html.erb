@@ -21,6 +21,15 @@
     <% end %>
   </div>
 
+  <div>
+    <select id="component_select" onchange="if (this.value !== 'Select component') window.location.href = this.value;">
+      <option>Select component</option>
+      <% @components.each do |component| %>
+        <option value="<%= search_product_by_component_products_path(component: component) %>"><%= component %></option>
+      <% end %>
+    </select>
+  </div>
+
   <% unless (controller_name == 'products' && action_name == 'show') || (controller_name == 'carts' && action_name == 'index') %>
     <div>
       <% if user_signed_in? && !current_user.admin? %>

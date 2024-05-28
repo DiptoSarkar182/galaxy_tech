@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :products do
     collection do
       get :search_product
+      get :search_product_by_component
     end
     resources :cart_items do
       member do
