@@ -25,6 +25,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :admin_dashboards
+  resources :orders do
+    collection do
+      get :checkout
+    end
+  end
+
+  resources :admin_dashboards, only: [:index, :create, :destroy]
 
 end

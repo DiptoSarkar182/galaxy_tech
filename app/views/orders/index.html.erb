@@ -1,0 +1,41 @@
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <div>
+      Order ID: <%= order.order_number %>
+      <div>
+        Placed on: <%= order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
+      </div>
+      <div>
+        <% if order.status == 'pending' %>
+          <%= link_to "Delete", order_path(order), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+        <%else %>
+        <div>
+          Order cannot be canceled now.
+        </div>
+        <% end %>
+      </div>
+      <ul>
+        <% order.order_items.each do |item| %>
+          <li>
+            <%= item.product.name %>, Quantity: <%= item.quantity %>
+          </li>
+        <% end %>
+      </ul>
+      <div>
+        Status: <%= order.status %>
+      </div>
+      <div>
+        <% if order.payment_method == 'cash_on_delivery' %>
+        <div>
+          Payment Method: CASH ON DELIVERY
+        </div>
+        <% end %>
+      </div>
+      <div>
+        Total amount to pay: <%= number_to_currency(order.total_price, unit: '৳', format: "%n%u") %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p>You have not ordered anything yet.</p>
+<% end %>

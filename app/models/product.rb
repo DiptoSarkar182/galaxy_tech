@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   has_one_attached :product_image
 
   has_many :cart_items
+  has_many :order_items
   has_many :carts, through: :cart_items
 
   before_destroy :purge_product_image

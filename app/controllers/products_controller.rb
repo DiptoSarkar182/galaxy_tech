@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
 
   before_action :authenticate_admin, only: [:new, :edit, :create, :update]
   def index
-    @products = Product.all
+    @products = Product.page(params[:page]).per(5)
   end
 
   def new
