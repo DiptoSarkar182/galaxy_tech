@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_components
-    @components = Product.pluck(:component).uniq.sort
+    @components = Product.pluck(:component).reject(&:blank?).uniq.sort
   end
 
 end

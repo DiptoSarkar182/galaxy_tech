@@ -25,6 +25,7 @@
     <select id="component_select" onchange="if (this.value !== 'Select component') window.location.href = this.value;">
       <option>Select component</option>
       <% @components.each do |component| %>
+        <% next if component.blank? %>
         <option value="<%= search_product_by_component_products_path(component: component) %>"><%= component %></option>
       <% end %>
     </select>
