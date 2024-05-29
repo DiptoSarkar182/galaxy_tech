@@ -46,7 +46,9 @@
             <% if @cart %>
               You have <%= link_to "#{@cart.cart_items.sum(:quantity) || 0} product(s) in your cart.", carts_path, data: {turbo_frame: "_top"} %>
             <% else %>
-              Your cart is empty.
+              <div>
+                <%= link_to "Your cart is empty.", carts_path, data: {turbo_frame: "_top"} %>
+              </div>
             <% end %>
           </div>
           <div>Total price: <%= number_to_currency(current_user.cart&.total_price || 0, unit: '৳', format: "%n%u") %></div>
@@ -72,7 +74,7 @@
     <%else %>
     <% if @product.quantity.zero? %>
       <button disabled>OUT OF STOCK</button>
-    <% elsif user_signed_in? && !current_user.admin? %>
+    <% elsif !current_user&.admin? %>
       <%= button_to "Add to cart", product_cart_items_path(@product), method: :post %>
     <% end %>
   <% end %>

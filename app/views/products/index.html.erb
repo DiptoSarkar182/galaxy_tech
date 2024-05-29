@@ -1,6 +1,7 @@
-<h1>
-  Welcome to Galaxy Tech
-</h1>
+<% if params[:page].blank? || params[:page].to_i == 1 %>
+  <h1>Welcome to Galaxy Tech</h1>
+<% end %>
+
 <div>
   <% @products.each do |product| %>
     <%= render product %>
