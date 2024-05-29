@@ -1,29 +1,52 @@
-<% if @products.any? %>
-  <% @products.each do |product| %>
+<div>
+
+  <div>
+
+    <%= form_with url: search_product_by_component_products_path, method: :get do |form| %>
+      <div>
+        Price Rance
+        <%= form.text_field :start_price, value: 0 %>
+        <%= form.text_field :end_price, value: params[:end_price] || number_with_delimiter(@highest_price, delimiter: ',') %>
+      </div>
+      <%= form.hidden_field :component, value: params[:component] %>
+      <%= form.submit "Apply" %>
+    <% end %>
+
     <div>
-      <% if product.product_image.attached? %>
+      Brand
+    </div>
+
+  </div>
+
+  <div>
+    <% if @products.any? %>
+      <% @products.each do |product| %>
         <div>
-          <%= link_to image_tag(product.product_image), product_path(product) %>
+          <% if product.product_image.attached? %>
+            <div>
+              <%= link_to image_tag(product.product_image), product_path(product) %>
+            </div>
+          <% end %>
+        </div>
+
+        <div>
+          <%= link_to product.name, product_path(product) %>
+        </div>
+
+        <div>
+          <% if product.quantity.zero? %>
+            OUT OF STOCK
+          <% else %>
+            <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT
+          <% end %>
         </div>
       <% end %>
-    </div>
+    <% else %>
+      <div>
+        There is no product that matches the search criteria.
+      </div>
+    <% end %>
 
-    <div>
-      <%= link_to product.name, product_path(product) %>
-    </div>
-
-    <div>
-      <% if product.quantity.zero? %>
-        OUT OF STOCK
-      <% else %>
-        <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT
-      <% end %>
-    </div>
-  <% end %>
-<% else %>
-  <div>
-    There is no product that matches the search criteria.
+    <%= paginate @products %>
   </div>
-<% end %>
-
-<%= paginate @products %>
+</div>

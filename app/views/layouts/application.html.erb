@@ -8,11 +8,15 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <meta name="turbo-cache-control" content="no-cache">
+<!--    <meta name="view-transition" content="same-origin" />-->
   </head>
 
   <body>
-  <div>
-    <%= link_to 'Galaxy Tech', root_path %>
+  <div >
+    <%= link_to root_path do %>
+      <%= image_tag 'Galaxytechv2.svg', alt: 'Galaxy Tech' %>
+    <% end %>
   </div>
   <div>
     <%= form_with url: search_product_products_path, method: :get do |form| %>
@@ -28,23 +32,39 @@
     <% end %>
   </div>
 
-  <% unless (controller_name == 'products' && action_name == 'show') || (controller_name == 'carts' && action_name == 'index') %>
-    <div>
-      <% if user_signed_in? && !current_user.admin? %>
-        <div>
-          <% if @cart %>
-            You have
-            <%= link_to "#{@cart.cart_items.sum(:quantity) || 0} product(s) in your cart.", carts_path %>
-          <% else %>
-            <%= link_to "Your cart is empty.", carts_path %>
-          <% end %>
-        </div>
-        <div>
-          Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '৳', format: "%n%u") %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+  <div>
+    <turbo-frame id="cart_info">
+      <div>
+        <% if user_signed_in? && !current_user.admin? %>
+          <div>
+            <% if @cart %>
+              <div>
+                <div>
+                  <%= link_to  carts_path, data: {turbo_frame: "_top"} do%>
+                    <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+                  <% end %>
+                </div>
+               (<%= @cart.cart_items.sum(:quantity) || 0 %>)
+              </div>
+            <% else %>
+              <div>
+                <div>
+                  <%= link_to  carts_path, data: {turbo_frame: "_top"} do%>
+                    <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+                  <% end %>
+                </div>
+                (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
+              </div>
+            <% end %>
+          </div>
+          <div>
+            Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '৳', format: "%n%u") %>
+          </div>
+        <% end %>
+      </div>
+    </turbo-frame>
+  </div>
+
 
   <div>
     <% if user_signed_in? %>

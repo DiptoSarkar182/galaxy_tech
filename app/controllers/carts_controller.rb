@@ -19,7 +19,13 @@ class CartsController < ApplicationController
       cart.destroy
     end
 
-    render partial: "increase_decrease_product", locals: { cart: @cart }
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: cart }) +
+          turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
+      end
+      format.html { redirect_to cart_path(cart) }
+    end
   end
 
 
@@ -29,7 +35,13 @@ class CartsController < ApplicationController
 
     if @cart_item
       @cart_item.increment!(:quantity)
-      render partial: "increase_decrease_product", locals: { cart: @cart }
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: @cart }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
+        end
+        format.html { redirect_to product_path(params[:product_id]) }
+      end
     else
       redirect_to cart_path(@cart), alert: 'There was an error increasing the quantity.'
     end
@@ -42,15 +54,17 @@ class CartsController < ApplicationController
     if @cart_item
       if @cart_item.quantity > 1
         @cart_item.decrement!(:quantity)
-        render partial: "increase_decrease_product", locals: { cart: @cart }
       else
         @cart_item.destroy
-        if @cart.cart_items.empty?
-          @cart.destroy
-          redirect_to carts_path
-        else
-          render partial: "increase_decrease_product", locals: { cart: @cart }
+        @cart.destroy if @cart.cart_items.empty?
+      end
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: @cart }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
         end
+        format.html { redirect_to cart_path(@cart) }
       end
     else
       redirect_to cart_path(@cart), alert: 'There was an error decreasing the quantity.'

@@ -50,8 +50,18 @@ class ProductsController < ApplicationController
     @products = @q.result(distinct: true).page(params[:page]).per(5)
   end
 
+  # def search_product_by_component
+  #   @products = Product.where(component: params[:component]).page(params[:page]).per(5)
+  #   @highest_price = Product.where(component: params[:component]).maximum(:price)
+  # end
+
   def search_product_by_component
-    @products = Product.where(component: params[:component]).page(params[:page]).per(5)
+    start_price = params[:start_price] ? params[:start_price].gsub(',', '').to_d : 0
+    end_price = params[:end_price] ? params[:end_price].gsub(',', '').to_d : Float::INFINITY
+
+    @q = Product.ransack(component_eq: params[:component], price_gteq: start_price, price_lteq: end_price)
+    @products = @q.result.page(params[:page]).per(5)
+    @highest_price = Product.where(component: params[:component]).maximum(:price)
   end
 
   private
