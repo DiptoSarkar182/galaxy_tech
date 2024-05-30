@@ -10,21 +10,33 @@ class CartsController < ApplicationController
     end
   end
 
+
   def destroy
-    cart_item = CartItem.find(params[:id])
-    cart = cart_item.cart
-    cart_item.destroy
+    cart_item = CartItem.find_by(id: params[:id])
 
-    if cart.cart_items.empty?
-      cart.destroy
-    end
+    if cart_item
+      cart = cart_item.cart
+      cart_item.destroy
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: cart }) +
-          turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
+      if cart.cart_items.empty?
+        cart.destroy
       end
-      format.html { redirect_to cart_path(cart) }
+
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: cart }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
+        end
+        format.html { redirect_to cart_path(cart) }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("increase_decrease_product", partial: "increase_decrease_product", locals: { cart: current_user.cart }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: current_user.cart })
+        end
+        format.html { redirect_to carts_path, alert: 'The item has already been removed from the cart.' }
+      end
     end
   end
 

@@ -48,6 +48,7 @@
           <%= button_to "+", increase_quantity_product_cart_item_path(@product, cart_item), method: :post %>
         <% end %>
         <%= button_to "-", decrease_quantity_product_cart_item_path(@product, current_user.cart.cart_items.find_by(product: @product)), method: :post %>
+        <%= cart_item.quantity %> in cart
       <% else %>
         <% if @product.quantity.zero? %>
           <button disabled>OUT OF STOCK</button>

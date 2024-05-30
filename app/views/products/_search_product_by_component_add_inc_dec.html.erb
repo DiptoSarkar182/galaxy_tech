@@ -1,0 +1,18 @@
+<turbo-frame id="search_product_by_component_add_inc_dec_<%= product.id %>">
+  <% if current_user && current_user.cart&.products&.include?(product) %>
+    <% cart_item = current_user.cart.cart_items.find_by(product: product) %>
+    <% if cart_item.quantity >= product.quantity %>
+      <button disabled>+</button>
+    <% else %>
+      <%= button_to "+", increase_quantity_product_path(id: product.id, cart_item_id: cart_item.id), method: :post %>
+    <% end %>
+    <%= button_to "-", decrease_quantity_product_path(product, current_user.cart.cart_items.find_by(id: product.id)), method: :post %>
+    <%= cart_item.quantity %> in cart
+  <% else %>
+    <% if product.quantity.zero? %>
+      <button disabled>OUT OF STOCK</button>
+    <% elsif user_signed_in? && !current_user.admin? %>
+      <%= button_to "Add to cart", add_to_cart_product_path(id: product.id), method: :post %>
+    <% end %>
+  <% end %>
+</turbo-frame>

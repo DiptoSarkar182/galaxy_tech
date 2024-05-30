@@ -14,6 +14,11 @@ Rails.application.routes.draw do
       get :search_product
       get :search_product_by_component
     end
+    member do
+      post :add_to_cart
+      post :increase_quantity
+      post :decrease_quantity
+    end
     resources :cart_items do
       member do
         post :increase_quantity

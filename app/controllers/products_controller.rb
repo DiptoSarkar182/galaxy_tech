@@ -50,18 +50,93 @@ class ProductsController < ApplicationController
     @products = @q.result(distinct: true).page(params[:page]).per(5)
   end
 
-  # def search_product_by_component
-  #   @products = Product.where(component: params[:component]).page(params[:page]).per(5)
-  #   @highest_price = Product.where(component: params[:component]).maximum(:price)
-  # end
 
   def search_product_by_component
     start_price = params[:start_price] ? params[:start_price].gsub(',', '').to_d : 0
     end_price = params[:end_price] ? params[:end_price].gsub(',', '').to_d : Float::INFINITY
 
-    @q = Product.ransack(component_eq: params[:component], price_gteq: start_price, price_lteq: end_price)
+    query = { component_eq: params[:component], price_gteq: start_price, price_lteq: end_price }
+    query[:brand_in] = params[:brands] if params[:brands].present?
+    query[:quantity_gt] = 0 if params[:in_stock] == 'In stock'
+
+    @q = Product.ransack(query)
     @products = @q.result.page(params[:page]).per(5)
     @highest_price = Product.where(component: params[:component]).maximum(:price)
+    @brands = Product.where(component: params[:component]).pluck(:brand).uniq
+  end
+
+  def add_to_cart
+    @product = Product.find(params[:id])
+    @cart = current_user.cart || current_user.create_cart
+
+    @cart_item = @cart.cart_items.find_by(product: @product)
+
+    if @cart_item
+      @cart_item.increment!(:quantity)
+    else
+      @cart_item = @cart.cart_items.new(product: @product, quantity: 1)
+    end
+
+    if @cart_item.save
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("search_product_by_component_add_inc_dec_#{@product.id}", partial: "search_product_by_component_add_inc_dec", locals: { product: @product }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: @cart })
+        end
+        format.html { redirect_to search_product_by_component_products_path }
+      end
+    else
+      redirect_to product_path(@product), alert: 'There was an error adding the product to the cart.'
+    end
+  end
+
+  def increase_quantity
+    @product = Product.find(params[:id])
+    @cart_item = CartItem.find_by(cart: current_user.cart, product_id: params[:id])
+
+    if @cart_item
+      @cart_item.increment!(:quantity)
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("search_product_by_component_add_inc_dec_#{@product.id}", partial: "search_product_by_component_add_inc_dec", locals: { product: @product }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: @cart })
+        end
+        # format.html { redirect_to product_path(params[:product_id]) }
+      end
+    else
+      redirect_to product_path(params[:product_id]), alert: 'There was an error increasing the quantity.'
+    end
+  end
+
+  def decrease_quantity
+    @product = Product.find(params[:id])
+    @cart_item = CartItem.find_by(cart: current_user.cart, product_id: params[:id])
+
+    if @cart_item
+      if @cart_item.quantity > 1
+        @cart_item.decrement!(:quantity)
+      else
+        @cart = @cart_item.cart
+        @cart_item.destroy
+        @cart.destroy if @cart.cart_items.empty?
+      end
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("search_product_by_component_add_inc_dec_#{@product.id}", partial: "search_product_by_component_add_inc_dec", locals: { product: @product }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: @cart })
+        end
+        # format.html { redirect_to product_path(params[:product_id]) }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("search_product_by_component_add_inc_dec_#{@product.id}", partial: "search_product_by_component_add_inc_dec", locals: { product: @product }) +
+            turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: @cart })
+        end
+        # redirect_to product_path(params[:id]), alert: 'There was an error decreasing the quantity.'
+        format.html { redirect_to product_path(params[:id]), alert: 'There was an error decreasing the quantity.' }
+      end
+    end
   end
 
   private

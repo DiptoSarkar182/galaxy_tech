@@ -5,7 +5,15 @@ class CartItemsController < ApplicationController
   def create
     @product = Product.find(params[:product_id])
     @cart = current_user.cart || current_user.create_cart
-    @cart_item = @cart.cart_items.new(product: @product, quantity: 1)
+    @cart_item = @cart.cart_items.find_by(product: @product)
+
+    if @cart_item
+      # If a CartItem for this product already exists, increment its quantity
+      @cart_item.increment!(:quantity)
+    else
+      # Otherwise, create a new CartItem
+      @cart_item = @cart.cart_items.new(product: @product, quantity: 1)
+    end
 
     if @cart_item.save
       respond_to do |format|
@@ -13,7 +21,7 @@ class CartItemsController < ApplicationController
           render turbo_stream: turbo_stream.update("add_to_cart_increase_decrease_quantity", partial: "products/add_to_cart_increase_decrease_quantity", locals: { product: @product }) +
             turbo_stream.update("cart_info", partial: "cart_info", locals: { cart: @cart })
         end
-        format.html { redirect_to product_path(@product) }
+        # format.html { redirect_to product_path(@product) }
       end
     else
       redirect_to product_path(@product), alert: 'There was an error adding the product to the cart.'
@@ -30,7 +38,7 @@ class CartItemsController < ApplicationController
           render turbo_stream: turbo_stream.update("add_to_cart_increase_decrease_quantity", partial: "products/add_to_cart_increase_decrease_quantity", locals: { product: @cart_item.product }) +
             turbo_stream.update("cart_info", partial: "cart_info", locals: { cart: current_user.cart })
         end
-        format.html { redirect_to product_path(params[:product_id]) }
+        # format.html { redirect_to product_path(params[:product_id]) }
       end
     else
       redirect_to product_path(params[:product_id]), alert: 'There was an error increasing the quantity.'
@@ -38,6 +46,7 @@ class CartItemsController < ApplicationController
   end
 
   def decrease_quantity
+    @product = Product.find(params[:product_id])
     @cart_item = CartItem.find_by(cart: current_user.cart, product_id: params[:product_id])
 
     if @cart_item
@@ -53,10 +62,16 @@ class CartItemsController < ApplicationController
           render turbo_stream: turbo_stream.update("add_to_cart_increase_decrease_quantity", partial: "products/add_to_cart_increase_decrease_quantity", locals: { product: @cart_item.product }) +
             turbo_stream.update("cart_info", partial: "cart_info", locals: { cart: current_user.cart })
         end
-        format.html { redirect_to product_path(params[:product_id]) }
+        # format.html { redirect_to product_path(params[:product_id]) }
       end
     else
-      redirect_to product_path(params[:product_id]), alert: 'There was an error decreasing the quantity.'
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.update("add_to_cart_increase_decrease_quantity", partial: "products/add_to_cart_increase_decrease_quantity", locals: { product: @product }) +
+            turbo_stream.update("cart_info", partial: "cart_info", locals: { cart: current_user.cart })
+        end
+        format.html { redirect_to product_path(@product), alert: 'There was an error decreasing the quantity.' }
+      end
     end
   end
 
