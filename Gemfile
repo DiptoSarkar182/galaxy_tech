@@ -77,3 +77,8 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-google-oauth2'
 gem 'ransack'
 gem 'kaminari'
+gem 'stripe'
+gem 'stripe-rails'
+gem "money-rails", "~> 1.15"
+
+gem 'money-open-exchange-rates'

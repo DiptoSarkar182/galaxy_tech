@@ -47,6 +47,10 @@
         </div>
 
         <div>
+          <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT
+        </div>
+
+        <div>
           <% if user_signed_in?%>
             <turbo-frame id="search_product_by_component_add_inc_dec_<%= product.id %>">
               <% if current_user && current_user.cart&.products&.include?(product) %>

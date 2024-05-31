@@ -1,0 +1,118 @@
+<h1>Your Order</h1>
+
+<p>Total Price: <%= @total_price %></p>
+
+<!--<form action="/orders/submit_stripe_payment" method="post" id="payment-form">-->
+<!--  <div class="form-row">-->
+<!--    <label for="card-element">-->
+<!--      Credit or debit card-->
+<!--    </label>-->
+<!--    <div id="card-element">-->
+
+<!--    </div>-->
+
+<!--    <div id="card-errors" role="alert"></div>-->
+<!--  </div>-->
+
+<!--  <button type="submit">Pay</button>-->
+<!--</form>-->
+<%= form_with url: submit_stripe_payment_orders_path, id: "payment-form", method: :post do |form| %>
+  <div class="form-row">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+    <div id="card-element">
+
+    </div>
+
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <%= hidden_field_tag :order_id, @order.id %>
+  <%= form.submit "Pay" %>
+<% end %>
+
+<script>
+    // Create a Stripe client.
+    var stripe = Stripe('<%= ENV["STRIPE_PUBLISHABLE_KEY"] %>');
+
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element.
+    var card = elements.create('card');
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                // Inform the user if there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Get the CSRF token
+        var csrfToken = document.querySelector('[name="csrf-token"]').getAttribute('content');
+
+        // Create a new FormData object
+        var formData = new FormData(form);
+        formData.append('authenticity_token', csrfToken);
+
+        // Submit the form
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-Token': csrfToken
+            },
+            credentials: 'same-origin'
+        }).then(function(response) {
+            if (!response.ok) {
+                // If the payment fails, the server will respond with a 422 status code and the error message
+                return response.text().then(function(message) {
+                    throw new Error(message);
+                });
+            }
+            return response.text();
+        }).then(function(data) {
+            if (data === 'success') {
+                alert('Payment successful!');
+                window.location.href = '/orders'; // Redirect to the orders path
+            }
+        }).catch(function(error) {
+            alert('Payment failed: ' + error.message);
+        });
+    }
+</script>

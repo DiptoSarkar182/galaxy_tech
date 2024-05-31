@@ -6,7 +6,14 @@
         Placed on: <%= order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
       </div>
       <div>
-        Order status: <%= order.status %>
+        <% if order.status == 'pending_payment' %>
+          Order status: Waiting for payment confirmation
+          <div>
+            Complete payment <%= link_to "here.", stripe_payment_order_path(order) %>
+          </div>
+          <% else %>
+          Order status: <%= order.status %>
+        <% end %>
       </div>
       <div>
         <%= button_to "View", order_path(order), method: :get %>

@@ -37,6 +37,11 @@ Rails.application.routes.draw do
   resources :orders do
     collection do
       get :checkout
+      post :submit_stripe_payment
+    end
+
+    member do
+      get :stripe_payment
     end
   end
 
