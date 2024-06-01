@@ -60,15 +60,17 @@
 </div>
 
 <div>
-  Total amount to pay: <%= number_to_currency(@order.total_price, unit: '৳', format: "%n%u") %>
+  Total amount to pay: <%= number_to_currency(@order.total_price, unit: '', format: "%n%u") %> USD
 </div>
 
 <div>
-  <% if @order.status == 'pending' ||  @order.status == 'pending_payment' %>
+  <% if @order.payment_method == 'cash_on_delivery' &&  @order.status == 'processing' %>
+    <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+  <% elsif @order.payment_method == 'online_payment' &&  @order.is_payment_completed == false %>
     <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
   <%else %>
     <div>
-      Order cannot be canceled now.
+      Order cannot be canceled now. If you wish to cancel, please refuse delivery.
     </div>
   <% end %>
 </div>

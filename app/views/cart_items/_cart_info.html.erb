@@ -39,7 +39,7 @@
       <% end %>
     </div>
     <div>
-      Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '৳', format: "%n%u") %>
+      Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
     </div>
   <% end %>
 </div>

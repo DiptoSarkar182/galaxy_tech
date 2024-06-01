@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Galaxy Tech</title>
+    <title><%= @title ? "#{@title} | Galaxy Tech" : "Galaxy Tech" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -59,7 +59,7 @@
             <% end %>
           </div>
           <div>
-            Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '৳', format: "%n%u") %>
+            Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
           </div>
         <% end %>
       </div>

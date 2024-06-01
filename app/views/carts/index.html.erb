@@ -5,7 +5,9 @@
         <div>Product Name: <%= cart_item.product.name %></div>
         <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
         <div>Quantity: <%= cart_item.quantity %></div>
-        <div>Total Price for this Product: <%= number_to_currency(cart_item.total_price, unit: '৳', format: "%n%u") %></div>
+        <div>
+          Total Price for this Product: <%= number_to_currency(cart_item.total_price, unit: '', format: "%n%u") %> USD
+        </div>
       </div>
       <div>
         <% if cart_item.quantity >= cart_item.product.quantity %>
@@ -24,11 +26,13 @@
       </div>
     <% end %>
     <div>
-      <div>Your Total Price: <%= number_to_currency(@cart.total_price, unit: '৳', format: "%n%u") %></div>
+      <div>
+        Your Total Price: <%= number_to_currency(@cart.total_price, unit: '', format: "%n%u") %> USD
+      </div>
     </div>
     <div>
       <%#= button_to "Confirm Order", orders_path, method: :post %>
-      <%= link_to "Checkout", checkout_orders_path, data: {turbo_frame: "_top"} %>
+      <%= button_to "Checkout", checkout_orders_path, method: :get, data: {turbo_frame: "_top"} %>
     </div>
   <% else %>
     <div>Your cart is empty.</div>

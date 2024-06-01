@@ -34,8 +34,8 @@
           3. Delivery Method
         </div>
         <div>
-          <%= radio_button_tag 'delivery_method', 'home_delivery', true, data: { cost: 60 } %> Home Delivery - 60৳
-          <%= radio_button_tag 'delivery_method', 'store_pickup', false, data: { cost: 0 } %> Store Pickup - 0৳
+          <%= radio_button_tag 'delivery_method', 'home_delivery', true, data: { cost: 10 } %> Home Delivery - 10 USD
+          <%= radio_button_tag 'delivery_method', 'store_pickup', false, data: { cost: 0 } %> Store Pickup - 0 USD
         </div>
       </div>
 
@@ -48,16 +48,16 @@
             <% @cart.cart_items.order(:id).each do |cart_item| %>
               <div>
                 <div>Product Name: <%= cart_item.product.name %></div>
-                <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
+                <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '', format: "%n%u") %> USD</div>
                 <div>Quantity: <%= cart_item.quantity %></div>
-                <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '৳', format: "%n%u") %></div>
+                <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '', format: "%n%u") %> USD</div>
               </div>
             <% end %>
 
             <div id="price-details">
-              <div id="product-total">Sub Total: <%= number_to_currency(@cart.total_price, unit: '৳', format: "%n%u") %></div>
-              <div id="delivery-cost">Delivery Cost: <%= number_to_currency(60, unit: '৳', format: "%n%u") %></div>
-              <div id="total-price">Your Total Price: <%= number_to_currency(@cart.total_price + 60 , unit: '৳', format: "%n%u") %></div>
+              <div id="product-total">Sub Total: <%= number_to_currency(@cart.total_price, unit: '', format: "%n%u") %> USD</div>
+              <div id="delivery-cost">Delivery Cost: <%= number_to_currency(10, unit: '', format: "%n%u") %> USD</div>
+              <div id="total-price">Your Total Price: <%= number_to_currency(@cart.total_price + 10 , unit: '', format: "%n%u") %> USD</div>
             </div>
 
             <div>
@@ -92,7 +92,7 @@
 
             // Custom function to format number as currency
             function formatCurrency(number) {
-                return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + '৳';
+                return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' USD';
             }
 
             const formattedFinalPrice = formatCurrency(finalPrice);

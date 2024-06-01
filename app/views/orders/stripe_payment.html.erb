@@ -1,6 +1,10 @@
+<div id="toast" style="display: none; position: fixed; top: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px; border-radius: 4px;">
+  Payment successful!
+</div>
+
 <h1>Your Order</h1>
 
-<p>Total Price: <%= @total_price %></p>
+<p>Total Price: <%= number_to_currency(@total_price, unit: 'USD ', format: "%n %u") %></p>
 
 <!--<form action="/orders/submit_stripe_payment" method="post" id="payment-form">-->
 <!--  <div class="form-row">-->
@@ -26,6 +30,9 @@
     </div>
 
     <div id="card-errors" role="alert"></div>
+  </div>
+  <div id="loading-spinner" style="display: none;">
+    <p>Loading...</p>
   </div>
 
   <%= hidden_field_tag :order_id, @order.id %>
@@ -59,12 +66,15 @@
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-
+        document.getElementById('loading-spinner').style.display = 'block';
+        var submitButton = form.querySelector('[type="submit"]');
+        submitButton.disabled = true;
         stripe.createToken(card).then(function(result) {
             if (result.error) {
                 // Inform the user if there was an error.
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
+                submitButton.disabled = false;
             } else {
                 // Send the token to your server.
                 stripeTokenHandler(result.token);
@@ -100,6 +110,7 @@
             credentials: 'same-origin'
         }).then(function(response) {
             if (!response.ok) {
+                document.getElementById('loading-spinner').style.display = 'none';
                 // If the payment fails, the server will respond with a 422 status code and the error message
                 return response.text().then(function(message) {
                     throw new Error(message);
@@ -108,10 +119,18 @@
             return response.text();
         }).then(function(data) {
             if (data === 'success') {
-                alert('Payment successful!');
-                window.location.href = '/orders'; // Redirect to the orders path
+                document.getElementById('loading-spinner').style.display = 'none';
+                var toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(function() {
+                    toast.style.display = 'none';
+                    window.location.href = '/orders';
+                }, 3000);
             }
         }).catch(function(error) {
+            document.getElementById('loading-spinner').style.display = 'none';
+            var submitButton = form.querySelector('[type="submit"]');
+            submitButton.disabled = false;
             alert('Payment failed: ' + error.message);
         });
     }

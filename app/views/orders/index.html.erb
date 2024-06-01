@@ -26,7 +26,7 @@
         <% end %>
       </ul>
       <div>
-        Total amount to pay: <%= number_to_currency(order.total_price, unit: '৳', format: "%n%u") %>
+        Total amount to pay: <%= number_to_currency(order.total_price, unit: '', format: "%n%u") %> USD
       </div>
     </div>
   <% end %>

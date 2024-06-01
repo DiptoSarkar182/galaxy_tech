@@ -71,7 +71,7 @@ class OrdersController < ApplicationController
       # Calculate the total price of the cart
       total_price = cart.total_price
       if params[:delivery_method] == 'home_delivery'
-        total_price += 60
+        total_price += 10
       end
 
       status = params[:payment_method] == 'online_payment' ? 'pending_payment' : 'processing'
@@ -118,11 +118,14 @@ class OrdersController < ApplicationController
 
   def destroy
     @order = Order.find(params[:id])
-    if @order.status == 'pending' || @order.status == 'pending_payment'
+    if @order.status == 'processing' || @order.payment_method == 'cash_on_delivery'
+      @order.destroy
+      redirect_to orders_path, notice: "Order Canceled successfully!"
+    elsif @order.payment_method == 'online_payment' &&  @order.is_payment_completed == false
       @order.destroy
       redirect_to orders_path, notice: "Order Canceled successfully!"
     else
-      redirect_to orders_path, alert: "Order Canceled successfully!"
+      redirect_to orders_path, alert: "Order cannot be cancelled at this time."
     end
   end
 
@@ -184,8 +187,7 @@ class OrdersController < ApplicationController
       return
     end
 
-    @total_price = @order.total_price
-    @total_price_usd = Money.new(@total_price, "BDT").exchange_to("USD").fractional
+    @total_price_usd = @order.total_price
     @total_price_usd_cents = (@total_price_usd.to_f * 100).round
     token = params[:stripeToken]
 
