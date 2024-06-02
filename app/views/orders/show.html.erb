@@ -1,76 +1,71 @@
-<div>
-  Order ID: <%= @order.order_number %>
-</div>
-<div>
-  Placed on: <%= @order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
-</div>
-<div>
-  Order status: <%= @order.status %>
-</div>
-<div>
-  <% if @order.delivery_method == 'home_delivery' %>
-  <div>
-    Shipping address: <%= @order.delivery_address %>
-  </div>
-    <% else %>
-  <div>
-    Shipping address: Galaxy Tech Main Branch, Dhaka
-  </div>
-  <% end %>
-</div>
+<div class="container mx-auto py-8">
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold text-gray-800">Order ID: <%= @order.order_number %></h2>
+      <p class="text-sm text-gray-600">Placed on: <%= @order.created_at.strftime("%d %b %Y %I:%M:%S %p") %></p>
+      <p class="text-sm text-gray-600">Order status: <%= @order.status %></p>
+    </div>
 
-<div>
-  Order summary
-</div>
-<div>
-  Products details
-  <div>
-    <ul>
-      <% @order.order_items.each do |item| %>
-        <li>
-          <%= item.product.name %>, Quantity: <%= item.quantity %>
-        </li>
+    <div class="mb-4">
+      <h3 class="text-md font-semibold text-gray-800 mb-2">Shipping Address:</h3>
+      <% if @order.delivery_method == 'home_delivery' %>
+        <p class="text-sm text-gray-600"><%= @order.delivery_address %></p>
+      <% else %>
+        <p class="text-sm text-gray-600">Galaxy Tech Main Branch, Dhaka</p>
       <% end %>
-    </ul>
+    </div>
 
+    <div class="mb-4">
+      <h3 class="text-md font-semibold text-gray-800 mb-2">Order Summary</h3>
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">Products Details:</h4>
+      <ul class="grid grid-cols-1 gap-4">
+        <% @order.order_items.each do |item| %>
+          <li class="flex items-start">
+            <% if item.product.product_image.attached? %>
+              <div class="flex-shrink-0 w-20 h-20">
+                <%= link_to image_tag(item.product.product_image, class: "object-contain h-full w-full rounded-md") %>
+              </div>
+            <% end %>
+            <div class="ml-4">
+              <div class="text-sm font-medium text-gray-900"><%= item.product.name %></div>
+              <div class="text-sm text-gray-600">Quantity: <%= item.quantity %></div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">Payment Method:</h4>
+      <% if @order.payment_method == 'cash_on_delivery' %>
+        <p class="text-sm text-gray-600">CASH ON DELIVERY</p>
+      <% else %>
+        <p class="text-sm text-gray-600">ONLINE PAYMENT</p>
+      <% end %>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">Delivery Method:</h4>
+      <% if @order.delivery_method == 'home_delivery' %>
+        <p class="text-sm text-gray-600">HOME DELIVERY</p>
+      <% else %>
+        <p class="text-sm text-gray-600">STORE PICKUP</p>
+      <% end %>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">Total Amount:</h4>
+      <p class="text-lg font-bold text-gray-800"><%= number_to_currency(@order.total_price, unit: '', format: "%n%u") %> USD</p>
+    </div>
+
+    <div>
+      <% if @order.payment_method == 'cash_on_delivery' && @order.status == 'processing' %>
+        <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md shadow-md" %>
+      <% elsif @order.payment_method == 'online_payment' && @order.is_payment_completed == false %>
+        <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md shadow-md" %>
+      <% else %>
+        <div class="text-sm text-gray-600">Order cannot be canceled now. If you wish to cancel, please refuse delivery.</div>
+      <% end %>
+    </div>
   </div>
-</div>
-<div>
-  <% if @order.payment_method == 'cash_on_delivery' %>
-    <div>
-      Payment Method: CASH ON DELIVERY
-    </div>
-    <%else %>
-    <div>
-      Payment Method: ONLINE PAYMENT
-    </div>
-  <% end %>
-</div>
-
-<div>
-  <% if @order.delivery_method == 'home_delivery' %>
-    <div>
-      Delivery Method: HOME DELIVERY
-    </div>
-  <%else %>
-    <div>
-      Delivery Method: STORE PICKUP
-    </div>
-  <% end %>
-</div>
-
-<div>
-  Total amount to pay: <%= number_to_currency(@order.total_price, unit: '', format: "%n%u") %> USD
-</div>
-
-<div>
-  <% if @order.payment_method == 'cash_on_delivery' &&  @order.status == 'processing' %>
-    <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-  <% elsif @order.payment_method == 'online_payment' &&  @order.is_payment_completed == false %>
-    <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-  <%else %>
-    <div>
-      Order cannot be canceled now. If you wish to cancel, please refuse delivery.
-    </div>
-  <% end %>
 </div>

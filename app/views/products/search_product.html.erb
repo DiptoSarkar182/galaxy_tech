@@ -1,61 +1,61 @@
-<% if @products.any? %>
-  <% @products.each do |product| %>
-    <div>
-      <% if product.product_image.attached? %>
-        <div>
-          <%= link_to image_tag(product.product_image), product_path(product) %>
+<div class="container mx-auto">
+  <% if @products.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <% @products.each do |product| %>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <% if product.product_image.attached? %>
+            <div class="aspect-w-16 aspect-h-9">
+              <%= link_to image_tag(product.product_image, class: "object-cover w-full h-full"), product_path(product) %>
+            </div>
+          <% end %>
+          <div class="p-4">
+            <h2 class="text-xl font-semibold mb-2">
+              <%= link_to product.name, product_path(product), class: "text-indigo-600 hover:text-indigo-700" %>
+            </h2>
+            <p class="text-gray-700 mb-4">
+              <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> USD
+            </p>
+            <div>
+              <% if user_signed_in? %>
+                <turbo-frame id="search_product_by_component_add_inc_dec_<%= product.id %>">
+                  <% if current_user && current_user.cart&.products&.include?(product) %>
+                    <% cart_item = current_user.cart.cart_items.find_by(product: product) %>
+                    <div class="flex items-center justify-between">
+                      <%= button_to "-", decrease_quantity_product_path(product, current_user.cart.cart_items.find_by(id: product.id)), method: :post, class: "bg-indigo-500 text-white rounded py-2 px-4 mb-2 hover:bg-indigo-600" %>
+                      <p class="text-gray-700 mx-2"><%= cart_item.quantity %> in cart</p>
+                      <% if cart_item.quantity >= product.quantity %>
+                        <button class="bg-gray-300 text-gray-700 rounded py-2 px-4 mb-2" disabled>+</button>
+                      <% else %>
+                        <%= button_to "+", increase_quantity_product_path(id: product.id, cart_item_id: cart_item.id), method: :post, class: "bg-indigo-500 text-white rounded py-2 px-4 mb-2 hover:bg-indigo-600" %>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <% if product.quantity.zero? %>
+                      <button class="bg-gray-300 text-gray-700 rounded py-2 px-4 mb-2 w-full" disabled>OUT OF STOCK</button>
+                    <% elsif user_signed_in? && !current_user.admin? %>
+                      <%= button_to "Add to cart", add_to_cart_product_path(id: product.id), method: :post, class: "bg-indigo-500 text-white rounded py-2 px-4 mb-2 w-full hover:bg-indigo-600" %>
+                    <% end %>
+                  <% end %>
+                </turbo-frame>
+              <% else %>
+                <% if product.quantity.zero? %>
+                  <button class="bg-gray-300 text-gray-700 rounded py-2 px-4" disabled>OUT OF STOCK</button>
+                <% elsif !current_user&.admin? %>
+                  <%= button_to "Add to cart", add_to_cart_product_path(id: product.id), method: :post, class: "bg-indigo-500 text-white rounded py-2 px-4 hover:bg-indigo-600" %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
-
-    <div>
-      <%= link_to product.name, product_path(product) %>
-    </div>
-
-    <div>
-      <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> USD
-    </div>
-
-<!--    <div>-->
-      <%# if product.quantity.zero? %>
-<!--        OUT OF STOCK-->
-      <%# else %>
-<!--        <%#= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> BDT-->
-      <%# end %>
-<!--    </div>-->
-    <div>
-      <% if user_signed_in?%>
-        <turbo-frame id="search_product_by_component_add_inc_dec_<%= product.id %>">
-          <% if current_user && current_user.cart&.products&.include?(product) %>
-            <% cart_item = current_user.cart.cart_items.find_by(product: product) %>
-            <% if cart_item.quantity >= product.quantity %>
-              <button disabled>+</button>
-            <% else %>
-              <%= button_to "+", increase_quantity_product_path(id: product.id, cart_item_id: cart_item.id), method: :post %>
-            <% end %>
-            <%= button_to "-", decrease_quantity_product_path(product, current_user.cart.cart_items.find_by(id: product.id)), method: :post %>
-            <%= cart_item.quantity %> in cart
-          <% else %>
-            <% if product.quantity.zero? %>
-              <button disabled>OUT OF STOCK</button>
-            <% elsif user_signed_in? && !current_user.admin? %>
-              <%= button_to "Add to cart", add_to_cart_product_path(id: product.id), method: :post %>
-            <% end %>
-          <% end %>
-        </turbo-frame>
-      <%else %>
-        <% if product.quantity.zero? %>
-          <button disabled>OUT OF STOCK</button>
-        <% elsif !current_user&.admin? %>
-          <%= button_to "Add to cart", add_to_cart_product_path(id: product.id), method: :post %>
-        <% end %>
-      <% end %>
+  <% else %>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <p class="text-gray-700">There are no products that match the search criteria.</p>
     </div>
   <% end %>
-  <% else %>
-  <div>
-    There is no product that matches the search criteria.
-  </div>
-<% end %>
 
-<%= paginate @products %>
+  <div class="mt-8">
+    <%= paginate @products, class: "flex justify-center" %>
+  </div>
+</div>

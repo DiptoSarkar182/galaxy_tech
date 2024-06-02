@@ -1,18 +1,20 @@
 <turbo-frame id="add_to_cart_increase_decrease_quantity">
   <% if current_user && current_user.cart&.products&.include?(product) %>
     <% cart_item = current_user.cart.cart_items.find_by(product: product) %>
-    <% if cart_item.quantity >= product.quantity %>
-      <button disabled>+</button>
-    <% else %>
-      <%= button_to "+", increase_quantity_product_cart_item_path(product, cart_item), method: :post %>
-    <% end %>
-    <%= button_to "-", decrease_quantity_product_cart_item_path(product, current_user.cart.cart_items.find_by(product: product)), method: :post %>
-    <%= cart_item.quantity %> in cart
+    <div class="flex items-center">
+      <%= button_to "-", decrease_quantity_product_cart_item_path(product, current_user.cart.cart_items.find_by(product: product)), method: :post, class: "w-8 px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300 mr-1" %>
+      <p class="text-gray-700 mx-1"><%= cart_item.quantity %> in cart</p>
+      <% if cart_item.quantity >= product.quantity %>
+        <button class="w-8 px-3 py-2 bg-gray-300 text-gray-700 rounded-md ml-1" disabled>+</button>
+      <% else %>
+        <%= button_to "+", increase_quantity_product_cart_item_path(product, cart_item), method: :post, class: "w-8 px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300 ml-1" %>
+      <% end %>
+    </div>
   <% else %>
     <% if product.quantity.zero? %>
-      <button disabled>OUT OF STOCK</button>
-    <% else %>
-      <%= button_to "Add to cart", product_cart_items_path(product), method: :post %>
+      <button class="px-3 py-2 bg-gray-300 text-gray-700 rounded-md" disabled>OUT OF STOCK</button>
+    <% elsif user_signed_in? && !current_user.admin? %>
+      <%= button_to "Add to cart", product_cart_items_path(product), method: :post, class: "px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300" %>
     <% end %>
   <% end %>
 </turbo-frame>

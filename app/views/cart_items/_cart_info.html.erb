@@ -1,44 +1,23 @@
-<!--<div>-->
-  <%# if user_signed_in? && !current_user.admin? %>
-<!--    <div>-->
-      <%# if @cart %>
-<!--        You have-->
-        <%#= link_to "#{@cart.cart_items.sum(:quantity) || 0} product(s) in your cart.", carts_path, data: {turbo_frame: "_top"} %>
-      <%# else %>
-        <%#= link_to "Your cart is empty.", carts_path, data: {turbo_frame: "_top"} %>
-      <%# end %>
-
-<!--    </div>-->
-<!--    <div>-->
-<!--      Total price: <%#= number_to_currency(@cart&.total_price || 0, unit: '৳', format: "%n%u") %>-->
-<!--    </div>-->
-  <%# end %>
-<!--</div>-->
-
-<div>
+<div class="mr-4">
   <% if user_signed_in? && !current_user.admin? %>
-    <div>
+    <div class="flex items-center">
       <% if @cart %>
-        <div>
-          <div>
-            <%= link_to  carts_path, data: {turbo_frame: "_top"} do%>
-              <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
-            <% end %>
-          </div>
-          (<%= @cart.cart_items.sum(:quantity) || 0 %>)
+        <div class="mr-2">
+          <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
+            <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+          <% end %>
         </div>
+        (<%= @cart.cart_items.sum(:quantity) || 0 %>)
       <% else %>
-        <div>
-          <div>
-            <%= link_to  carts_path, data: {turbo_frame: "_top"} do%>
-              <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
-            <% end %>
-          </div>
-          (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
+        <div class="mr-2">
+          <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
+            <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+          <% end %>
         </div>
+        (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
       <% end %>
     </div>
-    <div>
+    <div class="text-indigo-600 font-semibold">
       Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
     </div>
   <% end %>

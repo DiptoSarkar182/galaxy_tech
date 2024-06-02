@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
 
   before_action :authenticate_admin, only: [:new, :edit, :create, :update]
   def index
-    @products = Product.page(params[:page]).per(5)
+    @products = Product.page(params[:page]).per(18)
   end
 
   def new
@@ -56,7 +56,11 @@ class ProductsController < ApplicationController
     start_price = params[:start_price] ? params[:start_price].gsub(',', '').to_d : 0
     end_price = params[:end_price] ? params[:end_price].gsub(',', '').to_d : Float::INFINITY
 
-    query = { component_eq: params[:component], price_gteq: start_price, price_lteq: end_price }
+    query = { component_eq: params[:component] }
+    if start_price != 0 || end_price != 0
+      query[:price_gteq] = start_price
+      query[:price_lteq] = end_price
+    end
     query[:brand_in] = params[:brands] if params[:brands].present?
     query[:quantity_gt] = 0 if params[:in_stock] == 'In stock'
 
@@ -67,6 +71,10 @@ class ProductsController < ApplicationController
   end
 
   def add_to_cart
+    if current_user.nil?
+      redirect_to new_user_session_path, alert: 'You must be logged in to add items to the cart.'
+      return
+    end
     @product = Product.find(params[:id])
     @cart = current_user.cart || current_user.create_cart
 

@@ -1,86 +1,90 @@
-<div>
-  <div>
-    <%= form_with(model: @user, url: orders_path, method: :post, local: true)  do |form| %>
+<div class="container mx-auto py-8">
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <%= form_with(model: @user, url: orders_path, method: :post, local: true, class: "space-y-6") do |form| %>
       <div>
-
-        <div>
-          1. Customer Information
+        <h3 class="text-lg font-medium leading-6 text-gray-900">1. Customer Information</h3>
+        <div class="mt-2">
+          <p class="text-sm text-gray-500">Deliver to: <%= @user.full_name %></p>
+          <p class="text-sm text-gray-500">Email to: <%= @user.email %></p>
         </div>
-        <div>
-          Deliver to: <%= @user.full_name %>
-        </div>
-        <div>
-          Email to: <%= @user.email %>
-        </div>
-        <div>
-          <%= form.label :address %>
-          <%= form.text_area :address, autocomplete: "address" %>
-        </div>
-
-      </div>
-
-      <div>
-        <div>
-          2. Payment Method
-        </div>
-        <div>
-          <%= radio_button_tag 'payment_method', 'cash_on_delivery', true %> Cash on Delivery
-          <%= radio_button_tag 'payment_method', 'online_payment' %> Online Payment
+        <div class="mt-2">
+          <%= form.label :address, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_area :address, autocomplete: "address", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
         </div>
       </div>
 
       <div>
-        <div>
-          3. Delivery Method
-        </div>
-        <div>
-          <%= radio_button_tag 'delivery_method', 'home_delivery', true, data: { cost: 10 } %> Home Delivery - 10 USD
-          <%= radio_button_tag 'delivery_method', 'store_pickup', false, data: { cost: 0 } %> Store Pickup - 0 USD
+        <h3 class="text-lg font-medium leading-6 text-gray-900">2. Payment Method</h3>
+        <div class="mt-2">
+          <%= radio_button_tag 'payment_method', 'cash_on_delivery', true, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %> <%= label_tag 'cash_on_delivery', 'Cash on Delivery', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          <%= radio_button_tag 'payment_method', 'online_payment', false, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %> <%= label_tag 'online_payment', 'Online Payment', class: "ml-3 block text-sm font-medium text-gray-700" %>
         </div>
       </div>
 
       <div>
-        <div>
-          4. Order Overview
+        <h3 class="text-lg font-medium leading-6 text-gray-900">3. Delivery Method</h3>
+        <div class="mt-2">
+          <%= radio_button_tag 'delivery_method', 'home_delivery', true, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300", data: { cost: 10 } %> <%= label_tag 'home_delivery', 'Home Delivery - 10 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          <%= radio_button_tag 'delivery_method', 'store_pickup', false, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300", data: { cost: 0 } %> <%= label_tag 'store_pickup', 'Store Pickup - 0 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
         </div>
-        <div>
-          <% if @cart && @cart.cart_items.any? %>
-            <% @cart.cart_items.order(:id).each do |cart_item| %>
-              <div>
-                <div>Product Name: <%= cart_item.product.name %></div>
-                <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '', format: "%n%u") %> USD</div>
-                <div>Quantity: <%= cart_item.quantity %></div>
-                <div>Total Price for this Product: <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '', format: "%n%u") %> USD</div>
-              </div>
-            <% end %>
+      </div>
 
+      <div>
+        <h3 class="text-lg font-medium leading-6 text-gray-900">4. Order Overview</h3>
+        <% if @cart && @cart.cart_items.any? %>
+          <div class="mt-4 overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+              </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+              <% @cart.cart_items.order(:id).each do |cart_item| %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900"><%= cart_item.product.name %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= number_to_currency(cart_item.product.price, unit: '', format: "%n%u") %> USD
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= cart_item.quantity %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= number_to_currency(cart_item.product.price * cart_item.quantity, unit: '', format: "%n%u") %> USD
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-4 bg-gray-50 p-4 rounded-md">
             <div id="price-details">
-              <div id="product-total">Sub Total: <%= number_to_currency(@cart.total_price, unit: '', format: "%n%u") %> USD</div>
-              <div id="delivery-cost">Delivery Cost: <%= number_to_currency(10, unit: '', format: "%n%u") %> USD</div>
-              <div id="total-price">Your Total Price: <%= number_to_currency(@cart.total_price + 10 , unit: '', format: "%n%u") %> USD</div>
+              <div id="product-total" class="text-sm text-gray-700">Sub Total: <%= number_to_currency(@cart.total_price, unit: '', format: "%n%u") %> USD</div>
+              <div id="delivery-cost" class="text-sm text-gray-700">Delivery Cost: <%= number_to_currency(10, unit: '', format: "%n%u") %> USD</div>
+              <div id="total-price" class="text-lg font-medium text-gray-900">Your Total Price: <%= number_to_currency(@cart.total_price + 10, unit: '', format: "%n%u") %> USD</div>
             </div>
+          </div>
 
-            <div>
-              <%= button_to "Confirm Order", orders_path, method: :post %>
+          <div class="mt-4">
+            <%= button_to "Confirm Order", orders_path, method: :post, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+          </div>
+        <% else %>
+          <div class="mt-4 bg-gray-50 p-4 rounded-md">
+            <div class="text-gray-700 text-base">Your cart is empty.</div>
+            <div class="mt-4">
+              <%= link_to "Go to homepage", root_path, data: { turbo_frame: "_top" }, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
             </div>
-
-          <% else %>
-
-            <div>Your cart is empty.</div>
-            <div>
-
-              <%= link_to "Go to homepage", root_path, data: {turbo_frame: "_top"} %>
-            </div>
-
-          <% end %>
-
-        </div>
-
+          </div>
+        <% end %>
       </div>
-
     <% end %>
   </div>
-
 </div>
 
 <script>

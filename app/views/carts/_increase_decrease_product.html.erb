@@ -1,43 +1,74 @@
-<turbo-frame id="increase_decrease_product">
+<turbo-frame id="increase_decrease_product" class="container mx-auto py-8">
   <% if cart && cart.cart_items.any? %>
-    <% cart.cart_items.order(:id).each do |cart_item| %>
-      <div>
-        <div>Product Name: <%= cart_item.product.name %></div>
-        <div>Unit Price: <%= number_to_currency(cart_item.product.price, unit: '৳', format: "%n%u") %></div>
-        <div>Quantity: <%= cart_item.quantity %></div>
-        <div>
-          Total Price for this Product: <%= number_to_currency(cart_item.total_price, unit: '', format: "%n%u") %> USD
-        </div>
-      </div>
-      <div>
-        <% if cart_item.quantity >= cart_item.product.quantity %>
-          <button disabled>+</button>
-        <% else %>
-          <%= button_to "+", increase_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        <% cart.cart_items.order(:id).each do |cart_item| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <% if cart_item.product.product_image.attached? %>
+                  <div class="flex-shrink-0 w-16 h-16">
+                    <%= link_to image_tag(cart_item.product.product_image, class: "object-contain h-full w-full") %>
+                  </div>
+                <% end %>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900"><%= cart_item.product.name %></div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= number_to_currency(cart_item.product.price, unit: '', format: "%n%u") %> USD
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= cart_item.quantity %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= number_to_currency(cart_item.total_price, unit: '', format: "%n%u") %> USD
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex justify-end items-center">
+                <% if cart_item.quantity >= cart_item.product.quantity %>
+                  <button class="bg-gray-400 text-white rounded-full w-8 h-8 mr-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>+</button>
+                <% else %>
+                  <%= button_to "+", increase_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2" %>
+                <% end %>
+                <% if cart_item.quantity == 1 %>
+                  <button class="bg-gray-400 text-white rounded-full w-8 h-8 disabled:opacity-50 disabled:cursor-not-allowed" disabled>-</button>
+                <% else %>
+                  <%= button_to "-", decrease_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mr-2" %>
+                <% end %>
+                <%= button_to "🗑️", cart_path(cart_item), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
+              </div>
+            </td>
+          </tr>
         <% end %>
-        <% if cart_item.quantity == 1 %>
-          <button disabled>-</button>
-        <% else %>
-          <%= button_to "-", decrease_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post %>
-        <% end %>
-        <div>
-          <%= button_to "🗑️", cart_path(cart_item), method: :delete %>
-        </div>
-      </div>
-    <% end %>
-    <div>
-      <div>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-4 mt-6">
+      <div class="font-bold text-lg mb-2">
         Your Total Price: <%= number_to_currency(cart.total_price, unit: '', format: "%n%u") %> USD
       </div>
     </div>
-    <div>
-      <%#= button_to "Confirm Order", orders_path, method: :post %>
-      <%= button_to "Checkout", checkout_orders_path, method: :get, data: {turbo_frame: "_top"} %>
+    <div class="mt-6">
+      <%= button_to "Checkout", checkout_orders_path, method: :get, data: {turbo_frame: "_top"}, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
     </div>
   <% else %>
-    <div>Your cart is empty.</div>
-    <div>
-      <%= link_to "Go to homepage", root_path, data: {turbo_frame: "_top"} %>
+    <div class="bg-white rounded-lg shadow-md p-4">
+      <div class="text-gray-700 text-base">Your cart is empty.</div>
+      <div class="mt-4">
+        <%= link_to "Go to homepage", root_path, data: {turbo_frame: "_top"}, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      </div>
     </div>
   <% end %>
 </turbo-frame>

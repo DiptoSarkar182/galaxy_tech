@@ -1,35 +1,56 @@
-<% if @orders.any? %>
-  <% @orders.each do |order| %>
-    <div>
-      Order ID: <%= order.order_number %>
-      <div>
-        Placed on: <%= order.created_at.strftime("%d %b %Y %I:%M:%S %p") %>
-      </div>
-      <div>
-        <% if order.status == 'pending_payment' %>
-          Order status: Waiting for payment confirmation
-          <div>
-            Complete payment <%= link_to "here.", stripe_payment_order_path(order) %>
+<div class="container mx-auto py-8">
+  <% if @orders.any? %>
+    <div class="grid grid-cols-1 gap-6">
+      <% @orders.each do |order| %>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="p-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-medium text-gray-900">Order ID: <%= order.order_number %></h3>
+              <span class="text-sm text-gray-500">Placed on: <%= order.created_at.strftime("%d %b %Y %I:%M:%S %p") %></span>
+            </div>
+            <div class="mt-4">
+              <% if order.status == 'pending_payment' %>
+                <p class="text-sm text-gray-500">Order status: Waiting for payment confirmation</p>
+                <div class="mt-2">
+                  <div class="inline-flex rounded-md shadow-sm">
+                    <%= link_to "Complete payment", stripe_payment_order_path(order), class: "inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" %>
+                  </div>
+                </div>
+              <% else %>
+                <p class="text-sm text-gray-500">Order status: <%= order.status %></p>
+              <% end %>
+            </div>
+            <div class="mt-4">
+              <%= button_to "View", order_path(order), method: :get, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" %>
+            </div>
           </div>
-          <% else %>
-          Order status: <%= order.status %>
-        <% end %>
-      </div>
-      <div>
-        <%= button_to "View", order_path(order), method: :get %>
-      </div>
-      <ul>
-        <% order.order_items.each do |item| %>
-          <li>
-            <%= item.product.name %>, Quantity: <%= item.quantity %>
-          </li>
-        <% end %>
-      </ul>
-      <div>
-        Total amount to pay: <%= number_to_currency(order.total_price, unit: '', format: "%n%u") %> USD
-      </div>
+          <div class="bg-gray-50 px-6 py-4">
+            <ul class="grid grid-cols-1 gap-2">
+              <% order.order_items.each do |item| %>
+                <li class="flex items-center text-sm text-gray-500">
+                  <% if item.product.product_image.attached? %>
+                    <div class="flex-shrink-0 w-10 h-10 mr-2">
+                      <%= link_to image_tag(item.product.product_image, class: "object-contain h-full w-full rounded-md") %>
+                    </div>
+                  <% end %>
+                  <span><%= item.product.name %>, Quantity: <%= item.quantity %></span>
+                </li>
+              <% end %>
+            </ul>
+            <div class="mt-4 text-sm text-gray-700">
+              <% if order.payment_method == 'online_payment' && order.is_payment_completed == true %>
+                Payment received via Stripe payment: <%= number_to_currency(order.total_price, unit: '', format: "%n%u") %> USD
+              <% elsif order.payment_method == 'online_payment' && order.is_payment_completed == false %>
+                Awaiting payment of <%= number_to_currency(order.total_price, unit: '', format: "%n%u") %> USD
+              <% else %>
+                Total price to pay for COD <%= number_to_currency(order.total_price, unit: '', format: "%n%u") %> USD
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
+  <% else %>
+    <p class="text-gray-700">You have not ordered anything yet.</p>
   <% end %>
-<% else %>
-  <p>You have not ordered anything yet.</p>
-<% end %>
+</div>

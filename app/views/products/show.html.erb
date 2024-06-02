@@ -1,79 +1,75 @@
-<div>
-  <% if current_user && current_user.admin? %>
-    <%= link_to "Edit", edit_product_path(@product) %>
-    <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-  <% end %>
-</div>
-
-<div>
-  <% if @product.product_image.attached? %>
-    <div>
-      <%= image_tag @product.product_image %>
-    </div>
-  <% end %>
-</div>
-
-<div>
-  Name: <%= @product.name %>
-</div>
-
-<div>
-  Price: <%= number_with_delimiter(number_with_precision(@product.price, precision: 2), delimiter: ',') %> USD
-</div>
-
-<div>
-  <% if current_user && current_user.admin? %>
-    Quantity: <%= @product.quantity %>
-  <% else %>
-    <% if @product.quantity > 0 %>
-      Status: In stock
-    <% else %>
-      Status: Out of stock
-    <% end %>
-  <% end %>
-</div>
-
-<div>
-  Brand: <%= @product.brand %>
-</div>
-
-<div>
-  <% if user_signed_in?%>
-    <turbo-frame id="add_to_cart_increase_decrease_quantity">
-      <% if current_user && current_user.cart&.products&.include?(@product) %>
-        <% cart_item = current_user.cart.cart_items.find_by(product: @product) %>
-        <% if cart_item.quantity >= @product.quantity %>
-          <button disabled>+</button>
-        <% else %>
-          <%= button_to "+", increase_quantity_product_cart_item_path(@product, cart_item), method: :post %>
-        <% end %>
-        <%= button_to "-", decrease_quantity_product_cart_item_path(@product, current_user.cart.cart_items.find_by(product: @product)), method: :post %>
-        <%= cart_item.quantity %> in cart
-      <% else %>
-        <% if @product.quantity.zero? %>
-          <button disabled>OUT OF STOCK</button>
-        <% elsif user_signed_in? && !current_user.admin? %>
-          <%= button_to "Add to cart", product_cart_items_path(@product), method: :post %>
-        <% end %>
+<div class="max-w-4xl mx-auto py-8">
+  <div class="flex flex-col md:flex-row">
+    <div class="md:w-1/2 mb-6 md:mb-0">
+      <% if @product.product_image.attached? %>
+        <%= image_tag @product.product_image, class: "w-full rounded-lg shadow-md" %>
       <% end %>
-    </turbo-frame>
-    <%else %>
-    <% if @product.quantity.zero? %>
-      <button disabled>OUT OF STOCK</button>
-    <% elsif !current_user&.admin? %>
-      <%= button_to "Add to cart", product_cart_items_path(@product), method: :post %>
-    <% end %>
-  <% end %>
-</div>
-
-<div>
-  Key Features: <%= @product.key_features %>
-</div>
-
-<div>
-  Specification: <%= @product.specification %>
-</div>
-
-<div>
-  Description: <%= @product.description %>
+    </div>
+    <div class="md:w-1/2 md:pl-8">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-3xl font-bold text-gray-800"><%= @product.name %></h1>
+        <% if current_user && current_user.admin? %>
+          <div class="flex space-x-2">
+            <%= link_to "Edit", edit_product_path(@product), class: "px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300" %>
+            <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300" %>
+          </div>
+        <% end %>
+      </div>
+      <p class="text-2xl font-semibold text-gray-700 mb-4">
+        <%= number_with_delimiter(number_with_precision(@product.price, precision: 2), delimiter: ',') %> USD
+      </p>
+      <div class="mb-4">
+        <% if current_user && current_user.admin? %>
+          <p class="text-gray-600">Quantity: <%= @product.quantity %></p>
+        <% else %>
+          <p class="text-gray-600">
+            Status: <span class="<%= @product.quantity > 0 ? 'text-green-500' : 'text-red-500' %>"><%= @product.quantity > 0 ? 'In stock' : 'Out of stock' %></span>
+          </p>
+        <% end %>
+      </div>
+      <p class="text-gray-600 mb-4">Brand: <%= @product.brand %></p>
+      <div class="mb-4">
+        <% if user_signed_in? %>
+          <turbo-frame id="add_to_cart_increase_decrease_quantity">
+            <% if current_user && current_user.cart&.products&.include?(@product) %>
+              <% cart_item = current_user.cart.cart_items.find_by(product: @product) %>
+              <div class="flex items-center">
+                <%= button_to "-", decrease_quantity_product_cart_item_path(@product, current_user.cart.cart_items.find_by(product: @product)), method: :post, class: "w-8 px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300 mr-1" %>
+                <p class="text-gray-700 mx-1"><%= cart_item.quantity %> in cart</p>
+                <% if cart_item.quantity >= @product.quantity %>
+                  <button class="w-8 px-3 py-2 bg-gray-300 text-gray-700 rounded-md ml-1" disabled>+</button>
+                <% else %>
+                  <%= button_to "+", increase_quantity_product_cart_item_path(@product, cart_item), method: :post, class: "w-8 px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300 ml-1" %>
+                <% end %>
+              </div>
+            <% else %>
+              <% if @product.quantity.zero? %>
+                <button class="px-3 py-2 bg-gray-300 text-gray-700 rounded-md" disabled>OUT OF STOCK</button>
+              <% elsif user_signed_in? && !current_user.admin? %>
+                <%= button_to "Add to cart", product_cart_items_path(@product), method: :post, class: "px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300" %>
+              <% end %>
+            <% end %>
+          </turbo-frame>
+        <% else %>
+          <% if @product.quantity.zero? %>
+            <button class="px-3 py-2 bg-gray-300 text-gray-700 rounded-md" disabled>OUT OF STOCK</button>
+          <% elsif !current_user&.admin? %>
+            <%= button_to "Add to cart", product_cart_items_path(@product), method: :post, class: "px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300" %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Key Features</h2>
+        <p class="text-gray-600"><%= @product.key_features %></p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Specification</h2>
+        <p class="text-gray-600"><%= @product.specification %></p>
+      </div>
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Description</h2>
+        <p class="text-gray-600"><%= @product.description %></p>
+      </div>
+    </div>
+  </div>
 </div>

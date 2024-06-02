@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     end
   end
 
+
   resources :admin_dashboards, only: [:index, :create, :destroy]
 
 end
