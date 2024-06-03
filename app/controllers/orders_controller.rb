@@ -158,7 +158,7 @@ class OrdersController < ApplicationController
   def stripe_payment
     @order = Order.find(params[:id])
     if @order.user != current_user
-      redirect_to root_path, alert: 'You are not authorized to view this page.'
+      redirect_to root_path, alert: 'Order not found'
       return
     end
 

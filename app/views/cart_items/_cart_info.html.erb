@@ -17,8 +17,8 @@
         (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
       <% end %>
     </div>
-    <div class="text-indigo-600 font-semibold">
-      Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
+    <div class="text-indigo-600 font-semibold max-w-xs overflow-hidden whitespace-nowrap overflow-ellipsis">
+      <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
     </div>
   <% end %>
 </div>

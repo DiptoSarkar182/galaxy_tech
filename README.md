@@ -81,4 +81,6 @@ You need to have Ruby and Rails installed on your machine. See [this guide](http
 6. Visit `http://localhost:3000/` in your browser to access the application.
 
 
-- <a target="_blank" href="https://icons8.com/icon/59997/shopping-cart">Cart</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+- <a target="_blank" href="https://icons8.com/icon/59997/shopping-cart">Cart, <a target="_blank" href="https://icons8.com/icon/65342/customer">Customer</a>
+</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+

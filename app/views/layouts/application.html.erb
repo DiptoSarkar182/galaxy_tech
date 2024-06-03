@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <meta name="turbo-cache-control" content="no-cache">
+    <meta name="view-transition" content="same-origin" />
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
@@ -21,41 +22,81 @@
         <%= image_tag 'Galaxytechv2.svg', alt: 'Galaxy Tech', class: 'h-12' %>
       <% end %>
       <div class="flex items-center ml-auto">
-        <%= form_with url: search_product_products_path, method: :get, class: 'flex' do |form| %>
+        <%= form_with url: search_product_products_path, method: :get, class: 'flex mx-auto' do |form| %>
           <%= form.text_field :product_name, placeholder: "Search", required: true, value: (params[:product_name] unless current_page?(root_path)), autocomplete: 'off', class: 'border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500' %>
           <%= form.button type: :submit, class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-md hidden" do %>
             <i class="fas fa-search"></i>
           <% end %>
         <% end %>
       </div>
-      <div class="flex items-center ml-4">
-        <% if user_signed_in? %>
-          <% if current_user.admin? %>
-            <div class="mr-4 text-gray-700">
-              Hello, <%= current_user.full_name %> (Admin)
-            </div>
-            <div class="mr-4">
-              <%= link_to "Admin Dashboard", admin_dashboards_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md' %>
+      <div class="flex items-center ml-8">
+        <div class="relative">
+          <% if user_signed_in? %>
+            <div class="relative group" data-controller="dropdown">
+              <div class="flex items-center cursor-pointer py-2 px-3 rounded-md transition duration-300 hover:bg-indigo-500 hover:text-white" data-dropdown-target="trigger" data-action="mouseenter->dropdown#showMenu mouseleave->dropdown#hideMenu">
+                <div class="w-8 h-8 mr-2 transition duration-300 group-hover:invert">
+                  <%= image_tag "customer_icon.png" %>
+                </div>
+                <div class="text-sm transition duration-300 group-hover:text-black">
+                  <div>Hello, <%= current_user.full_name %></div>
+                  <% if user_signed_in? && !current_user.admin? %>
+                    <div>Orders &amp; account</div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="absolute left-0 mt-1 -ml-2 hidden bg-white border rounded-md shadow-lg z-10 transition duration-300 transform origin-top scale-0 group-hover:scale-100" data-dropdown-target="menu" data-action="mouseenter->dropdown#showMenu mouseleave->dropdown#hideMenu">
+                <% if current_user.admin? %>
+                  <div class="px-4 py-2 text-gray-700 transition duration-300 hover:bg-indigo-500 hover:text-white">
+                    <%= link_to "Admin Dashboard", admin_dashboards_path, class: 'block px-4 py-2' %>
+                  </div>
+                <% else %>
+                  <div class="px-4 text-gray-700 transition duration-300 hover:bg-indigo-500 hover:text-white">
+                    <%= link_to 'My Orders', orders_path, class: 'block px-4 py-2' %>
+                  </div>
+                  <div class="px-4 text-gray-700 transition duration-300 hover:bg-indigo-500 hover:text-white">
+                    <%= link_to 'Edit profile', edit_user_registration_path, class: 'block px-4 py-2' %>
+                  </div>
+                <% end %>
+                <div class="px-4 text-gray-700 transition duration-300 hover:bg-indigo-500 hover:text-white">
+                  <%= button_to "Log Out", destroy_user_session_url, method: "delete", class: 'w-full text-left block px-4 py-2' %>
+                </div>
+              </div>
             </div>
           <% else %>
-            <div class="mr-4 text-gray-700">
-              Hello, <%= current_user.full_name %>
-            </div>
             <div class="mr-4">
-              <%= link_to 'My orders', orders_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md' %>
+              <%= button_to "Log In", new_user_session_url, method: "get", class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md' %>
+            </div>
+            <div>
+              <%= button_to "Sign Up", new_user_registration_url, method: "get", class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md' %>
             </div>
           <% end %>
-          <div>
-            <%= button_to "Log Out", destroy_user_session_url, method: "delete", class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md' %>
-          </div>
-        <% else %>
+        </div>
+        <turbo-frame id="cart_info" class="flex items-center ml-4">
           <div class="mr-4">
-            <%= button_to "Log In", new_user_session_url, method: "get", class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md' %>
+            <% if user_signed_in? && !current_user.admin? %>
+              <div class="flex items-center">
+                <% if @cart %>
+                  <div class="mr-2">
+                    <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
+                      <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+                    <% end %>
+                  </div>
+                  (<%= @cart.cart_items.sum(:quantity) || 0 %>)
+                <% else %>
+                  <div class="mr-2">
+                    <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
+                      <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
+                    <% end %>
+                  </div>
+                  (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
+                <% end %>
+              </div>
+              <div class="text-indigo-600 font-semibold max-w-xs overflow-hidden whitespace-nowrap overflow-ellipsis">
+                <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
+              </div>
+            <% end %>
           </div>
-          <div>
-            <%= button_to "Sign Up", new_user_registration_url, method: "get", class: 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md' %>
-          </div>
-        <% end %>
+        </turbo-frame>
       </div>
     </div>
 
@@ -64,35 +105,6 @@
         <% next if component.blank? %>
         <%= link_to component, search_product_by_component_products_path(component: component), class: 'component-link bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md m-2' %>
       <% end %>
-    </div>
-
-    <div class="flex justify-between items-center mb-8">
-      <turbo-frame id="cart_info" class="flex items-center">
-        <div class="mr-4">
-          <% if user_signed_in? && !current_user.admin? %>
-            <div class="flex items-center">
-              <% if @cart %>
-                <div class="mr-2">
-                  <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
-                    <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
-                  <% end %>
-                </div>
-                (<%= @cart.cart_items.sum(:quantity) || 0 %>)
-              <% else %>
-                <div class="mr-2">
-                  <%= link_to carts_path, data: {turbo_frame: "_top"} do %>
-                    <%= image_tag "cart_icon.png", alt: "cart icon", width: "24", height: "24" %>
-                  <% end %>
-                </div>
-                (<%= @cart&.cart_items&.sum(:quantity) || 0 %>)
-              <% end %>
-            </div>
-            <div class="text-indigo-600 font-semibold">
-              Total price: <%= number_to_currency(@cart&.total_price || 0, unit: '', format: "%n %u") %> USD
-            </div>
-          <% end %>
-        </div>
-      </turbo-frame>
     </div>
   </div>
 
@@ -137,7 +149,7 @@
         <div>
           <h3 class="text-lg font-bold mb-4">Contact Us</h3>
           <p class="mb-4">Email: support@galaxytech.com</p>
-          <p class="mb-4">Phone: 123-345-789</p>
+          <p class="mb-4">Phone: 123-456-789</p>
           <div class="flex space-x-4">
             <a href="https://www.facebook.com/" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
               <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
@@ -157,6 +169,5 @@
       </div>
     </div>
   </footer>
-
   </body>
 </html>
