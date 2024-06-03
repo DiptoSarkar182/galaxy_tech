@@ -11,9 +11,10 @@
     <meta name="turbo-cache-control" content="no-cache">
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
   </head>
 
-  <body class="bg-gray-100">
+  <body class="flex flex-col min-h-screen bg-gray-100">
   <div class="container mx-auto px-4 py-8">
     <div class="flex flex-wrap items-center justify-between mb-8">
       <%= link_to root_path do %>
@@ -112,7 +113,50 @@
     </div>
   <% end %>
 
+  <main class="flex-grow">
     <%= yield %>
+  </main>
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-lg font-bold mb-4">About Us</h3>
+          <p class="mb-4">We are a leading provider of high-quality PC components, dedicated to delivering top-notch products and excellent customer service.</p>
+          <p class="mb-4">Explore our wide range of GPUs, CPUs, and other essential components to build your dream PC.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="/products/search_product_by_component?component=Graphics+Card" class="hover:text-gray-400 transition duration-300">GPUs</a></li>
+            <li><a href="/products/search_product_by_component?component=Processor" class="hover:text-gray-400 transition duration-300">CPUs</a></li>
+            <li><a href="/products/search_product_by_component?component=Motherboard" class="hover:text-gray-400 transition duration-300">Motherboards</a></li>
+            <li><a href="/products/search_product_by_component?component=RAM+%28Desktop%29" class="hover:text-gray-400 transition duration-300">Memory</a></li>
+            <li><a href="/products/search_product_by_component?component=Hard+Disk+Drive" class="hover:text-gray-400 transition duration-300">Storage</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+          <p class="mb-4">Email: support@galaxytech.com</p>
+          <p class="mb-4">Phone: 123-345-789</p>
+          <div class="flex space-x-4">
+            <a href="https://www.facebook.com/" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/facebook/facebook-original.svg" />
+              </svg>
+            </a>
+            <a href="https://x.com/home" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/twitter/twitter-original.svg" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 border-t border-gray-700 pt-4 text-center">
+        &copy; <%= Date.today.year %> Galaxy Tech. All rights reserved.
+      </div>
+    </div>
+  </footer>
 
   </body>
 </html>

@@ -54,8 +54,7 @@
       <p class="text-gray-700">There are no products that match the search criteria.</p>
     </div>
   <% end %>
-
-  <div class="mt-8">
-    <%= paginate @products, class: "flex justify-center" %>
-  </div>
+</div>
+<div class="pagination-container">
+  <%= paginate @products %>
 </div>

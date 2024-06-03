@@ -2,11 +2,10 @@
 
 ## Introduction
 
-Welcome to Galaxy Tech, an e-commerce platform dedicated to selling PC parts and components. 
-This project was developed as a part of my portfolio to showcase my skills in creating a user-friendly online shopping 
-experience. It offers a wide range of products from CPUs and GPUs to RAM and SSDs. Whether you're 
+Welcome to Galaxy Tech, an e-commerce platform dedicated to selling PC parts, components and phones. 
+It offers a wide range of products from CPUs and GPUs to RAM and SSDs. Whether you're 
 building a PC from scratch, upgrading a current setup, or just looking for specific components, Galaxy 
-Tech has you covered. The platform features detailed product descriptions and a powerful search 
+Tech has you covered. The platform features detailed product descriptions and a search 
 engine to help you find exactly what you need.
 
 ## Live Demo
