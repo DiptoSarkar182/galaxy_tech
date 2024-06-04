@@ -112,7 +112,7 @@ Rails.application.configure do
     address: 'smtp.resend.com',
     port: 465,
     user_name: 'resend',
-    password: 're_123456789',
+    password: 're_j3746QC8_C2L8SJUGXkGzWhQkgCEbcS7n',
     tls: true
   }
 end
