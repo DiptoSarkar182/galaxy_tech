@@ -4,6 +4,10 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
+    <% unless resource.confirmed? %>
+      <p class="text-red-500">Your email is not confirmed.</p>
+    <% end %>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <%= f.label :full_name, class: "block text-gray-700 font-bold mb-2" %>
