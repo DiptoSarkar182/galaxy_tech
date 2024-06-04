@@ -97,21 +97,13 @@ Rails.application.configure do
 
   config.active_storage.service = :cloudinary
   config.action_mailer.default_url_options = { :host => 'https://galaxy-tech.onrender.com' }
-  # config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #   :user_name => ENV['SENDGRID_USERNAME'],
-  #   :password => ENV['SENDGRID_PASSWORD'],
-  #   :address => 'smtp.sendgrid.net',
-  #   :port => 587,
-  #   :authentication => :plain,
-  #   :enable_starttls_auto => true
-  # }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: 'smtp.resend.com',
-    port: 465,
-    user_name: ENV['RESEND_USERNAME'],
-    :password => ENV['RESEND_PASSWORD'],
-    tls: true
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
   }
 end
