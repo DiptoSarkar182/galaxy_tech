@@ -47,7 +47,7 @@ class ProductsController < ApplicationController
   end
 
   def search_product
-    @q = Product.ransack(name_cont: params[:product_name])
+    @q = Product.ransack(name_cont: params[:product_name], component_cont: params[:product_name], m: 'or')
     @products = @q.result(distinct: true).page(params[:page]).per(5)
   end
 

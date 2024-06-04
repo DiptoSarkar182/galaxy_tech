@@ -36,18 +36,44 @@
               <%= number_to_currency(cart_item.total_price, unit: '', format: "%n%u") %> USD
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <div class="flex justify-end items-center">
-                <% if cart_item.quantity >= cart_item.product.quantity %>
-                  <button class="bg-gray-400 text-white rounded-full w-8 h-8 mr-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>+</button>
-                <% else %>
-                  <%= button_to "+", increase_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2" %>
+              <div class="flex items-center">
+                <div class="flex items-center rounded-md overflow-hidden">
+                  <% if cart_item.quantity >= cart_item.product.quantity %>
+                    <button class="bg-gray-300 text-gray-500 py-2 px-4 cursor-not-allowed" disabled>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                      </svg>
+                    </button>
+                  <% else %>
+                    <%= button_to increase_quantity_cart_path(@cart, product_id: cart_item.product_id), method: :post, class: "bg-blue-500 hover:bg-blue-600 text-white py-2 px-4" do %>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                      </svg>
+                    <% end %>
+                  <% end %>
+
+                  <span class="bg-gray-100 text-gray-800 py-2 px-4"><%= cart_item.quantity %></span>
+
+                  <% if cart_item.quantity == 1 %>
+                    <button class="bg-gray-300 text-gray-500 py-2 px-4 cursor-not-allowed" disabled>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                      </svg>
+                    </button>
+                  <% else %>
+                    <%= button_to decrease_quantity_cart_path(@cart, product_id: cart_item.product_id), method: :post, class: "bg-red-500 hover:bg-red-600 text-white py-2 px-4" do %>
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                      </svg>
+                    <% end %>
+                  <% end %>
+                </div>
+
+                <%= button_to cart_path(cart_item), method: :delete, class: "ml-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded" do %>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
                 <% end %>
-                <% if cart_item.quantity == 1 %>
-                  <button class="bg-gray-400 text-white rounded-full w-8 h-8 disabled:opacity-50 disabled:cursor-not-allowed" disabled>-</button>
-                <% else %>
-                  <%= button_to "-", decrease_quantity_cart_path(cart, product_id: cart_item.product_id), method: :post, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mr-2" %>
-                <% end %>
-                <%= button_to "🗑️", cart_path(cart_item), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
               </div>
             </td>
           </tr>

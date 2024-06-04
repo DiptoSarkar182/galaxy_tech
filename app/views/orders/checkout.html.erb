@@ -1,31 +1,43 @@
 <div class="container mx-auto py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
     <%= form_with(model: @user, url: orders_path, method: :post, local: true, class: "space-y-6") do |form| %>
-      <div>
-        <h3 class="text-lg font-medium leading-6 text-gray-900">1. Customer Information</h3>
-        <div class="mt-2">
-          <p class="text-sm text-gray-500">Deliver to: <%= @user.full_name %></p>
-          <p class="text-sm text-gray-500">Email to: <%= @user.email %></p>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">1. Customer Information</h3>
+        <div class="mb-4">
+          <p class="text-gray-600"><span class="font-semibold">Deliver to:</span> <%= @user.full_name %></p>
+          <p class="text-gray-600"><span class="font-semibold">Email:</span> <%= @user.email %></p>
         </div>
-        <div class="mt-2">
-          <%= form.label :address, class: "block text-sm font-medium text-gray-700" %>
-          <%= form.text_area :address, autocomplete: "address", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-medium leading-6 text-gray-900">2. Payment Method</h3>
-        <div class="mt-2">
-          <%= radio_button_tag 'payment_method', 'cash_on_delivery', true, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %> <%= label_tag 'cash_on_delivery', 'Cash on Delivery', class: "ml-3 block text-sm font-medium text-gray-700" %>
-          <%= radio_button_tag 'payment_method', 'online_payment', false, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %> <%= label_tag 'online_payment', 'Online Payment', class: "ml-3 block text-sm font-medium text-gray-700" %>
+        <div>
+          <%= form.label :address, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.text_area :address, autocomplete: "address", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 bg-white border-2 border-gray-300" %>
         </div>
       </div>
 
-      <div>
-        <h3 class="text-lg font-medium leading-6 text-gray-900">3. Delivery Method</h3>
-        <div class="mt-2">
-          <%= radio_button_tag 'delivery_method', 'home_delivery', true, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300", data: { cost: 10 } %> <%= label_tag 'home_delivery', 'Home Delivery - 10 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
-          <%= radio_button_tag 'delivery_method', 'store_pickup', false, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300", data: { cost: 0 } %> <%= label_tag 'store_pickup', 'Store Pickup - 0 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
+      <div class="mb-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-2">2. Payment Method</h3>
+        <div class="flex flex-col space-y-2">
+          <div class="flex items-center">
+            <%= radio_button_tag 'payment_method', 'cash_on_delivery', true, class: "focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded-full" %>
+            <%= label_tag 'cash_on_delivery', 'Cash on Delivery', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          </div>
+          <div class="flex items-center">
+            <%= radio_button_tag 'payment_method', 'online_payment', false, class: "focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded-full" %>
+            <%= label_tag 'online_payment', 'Online Payment (Stripe)', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-lg font-medium leading-6 text-gray-900 mb-2">3. Delivery Method</h3>
+        <div class="flex flex-col space-y-2">
+          <div class="flex items-center">
+            <%= radio_button_tag 'delivery_method', 'home_delivery', true, class: "focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded-full", data: { cost: 10 } %>
+            <%= label_tag 'home_delivery', 'Home Delivery - 10 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          </div>
+          <div class="flex items-center">
+            <%= radio_button_tag 'delivery_method', 'store_pickup', false, class: "focus:ring-indigo-500 h-5 w-5 text-indigo-600 border-gray-300 rounded-full", data: { cost: 0 } %>
+            <%= label_tag 'store_pickup', 'Store Pickup - 0 USD', class: "ml-3 block text-sm font-medium text-gray-700" %>
+          </div>
         </div>
       </div>
 
@@ -63,7 +75,7 @@
             </table>
           </div>
 
-          <div class="mt-4 bg-gray-50 p-4 rounded-md">
+          <div class="mt-4 bg-gray-50 p-4 rounded-md text-right">
             <div id="price-details">
               <div id="product-total" class="text-sm text-gray-700">Sub Total: <%= number_to_currency(@cart.total_price, unit: '', format: "%n%u") %> USD</div>
               <div id="delivery-cost" class="text-sm text-gray-700">Delivery Cost: <%= number_to_currency(10, unit: '', format: "%n%u") %> USD</div>

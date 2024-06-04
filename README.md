@@ -15,8 +15,8 @@ Please note that the app is hosted on a free tier and may take a moment to load 
 
 ## Features
 
-- **User Authentication:** Implemented with Devise gem. Users can sign up, log in, and log out. Passwords are securely 
-hashed and stored.
+- **User Authentication:** Implemented with Devise gem. Users can sign up, log in, log out, confirm account, 
+reset password, sign in with google. Passwords are securely hashed and stored.
 
 - **Product Catalog:** A wide range of PC components are listed. Each product has a detailed description, price, 
 and image.
@@ -30,6 +30,8 @@ and SSDs.
 complete their purchase.
 
 - **Order History:** Users can view their past orders, including the purchased items, quantities, and total cost.
+
+- **Email Service:** Through sendgrid email service, users are able to confirm account and reset password. 
 
 [//]: # (- **Product Reviews:** Users can leave reviews for products they've purchased, including a rating and comments.)
 
@@ -46,14 +48,10 @@ complete their purchase.
 - TailwindCSS
 - Cloudinary
 
-[//]: # (## Screenshots)
+## Screenshots
 
-[//]: # ()
-[//]: # (![SS1]&#40;./app/assets/images/ss1.PNG&#41;)
 
-[//]: # (![SS2]&#40;./app/assets/images/ss2.PNG&#41;)
-
-[//]: # (![GIF1]&#40;./app/assets/images/chatting_gif.gif&#41;)
+![SS1](./app/assets/images/ss1.PNG)
 
 
 ## Future Features
@@ -61,7 +59,7 @@ complete their purchase.
 - UI/UX improvement
 - Admin can manage and view all users orders and the site content.
 - Rating and review for each product.
-- Email service for new user sign up, password reset, email confirmation, order confirmation.
+- Email service for new user sign up, order confirmation.
 
 ## Getting Started
 
@@ -81,6 +79,7 @@ You need to have Ruby and Rails installed on your machine. See [this guide](http
 6. Visit `http://localhost:3000/` in your browser to access the application.
 
 
+- Galaxy Tech logo made by https://dribbble.com/Fahimsarfi
 - <a target="_blank" href="https://icons8.com/icon/59997/shopping-cart">Cart, <a target="_blank" href="https://icons8.com/icon/65342/customer">Customer</a>
 </a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
