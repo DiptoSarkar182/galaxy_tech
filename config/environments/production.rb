@@ -97,14 +97,22 @@ Rails.application.configure do
 
   config.active_storage.service = :cloudinary
   config.action_mailer.default_url_options = { :host => 'https://galaxy-tech.onrender.com' }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.elasticemail.com',
+  #   port: 2525, # or 587
+  #   domain: 'gmail.com',
+  #   user_name: ENV['elastic_mail_username'],
+  #   password: ENV['elastic_mail_password'],
+  #   authentication: 'login',
+  #   enable_starttls_auto: true
+  # }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: 'smtp.elasticemail.com',
-    port: 2525, # or 587
-    domain: 'gmail.com',
-    user_name: ENV['elastic_mail_username'],
-    password: ENV['elastic_mail_password'],
-    authentication: 'login',
-    enable_starttls_auto: true
+    address: 'smtp.resend.com',
+    port: 465,
+    user_name: 'resend',
+    password: 're_123456789',
+    tls: true
   }
 end
