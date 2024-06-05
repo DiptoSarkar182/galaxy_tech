@@ -22,7 +22,7 @@ class User < ApplicationRecord
       end
       if user.new_record?
         user.save!
-        # UserMailer.with(user: user).welcome_email.deliver_later
+        WelcomeUserMailer.with(user: user).welcome_email.deliver_later
       end
     end
   end

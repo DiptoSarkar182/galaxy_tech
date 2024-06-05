@@ -1,0 +1,18 @@
+<div class="bg-gray-100 py-12">
+  <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Welcome to Galaxy Tech</h1>
+    </div>
+    <p class="text-gray-700 mb-4">
+      Hello, <%= @user.full_name %>
+    </p>
+    <p class="text-gray-600 mb-6">
+      You have successfully signed up to Galaxy Tech, your email is: <%= @user.email %>
+    </p>
+    <div class="text-center">
+      <a href="<%= @url %>" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+        Login to the site
+      </a>
+    </div>
+  </div>
+</div>
