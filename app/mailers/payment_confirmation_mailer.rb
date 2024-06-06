@@ -1,5 +1,7 @@
 class PaymentConfirmationMailer < ApplicationMailer
 
+  default from: 'diptosarkarhridoy@gmail.com'
+
   def payment_confirmation_email(user, order)
     @user = user
     @order = order
