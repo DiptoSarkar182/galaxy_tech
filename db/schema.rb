@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_04_072341) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_06_094725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -92,6 +92,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_072341) do
     t.datetime "updated_at", null: false
     t.string "delivery_method"
     t.boolean "is_payment_completed", default: false
+    t.string "stripe_charge_id"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
     t.index ["user_id"], name: "index_orders_on_user_id"
   end

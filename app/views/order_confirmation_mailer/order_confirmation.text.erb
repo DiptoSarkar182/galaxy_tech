@@ -1,0 +1,16 @@
+Order Confirmation
+
+Hello, <%= @user.full_name %>
+
+Your order was created at <%= @order.created_at %>
+
+Delivery address: <%= @order.delivery_address %>
+
+Order details:
+<% @order_items.each do |order_item| %>
+  Name: <%= order_item.product.name %>
+  Price: <%= order_item.price %>
+  Quantity: <%= order_item.quantity %>
+
+<% end %>
+Total price: <%= @order.total_price %>

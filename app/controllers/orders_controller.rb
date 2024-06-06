@@ -10,53 +10,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # def create
-  #   ActiveRecord::Base.transaction do
-  #     cart = Cart.find_by(user_id: current_user.id)
-  #
-  #     if current_user.address != params[:user][:address]
-  #       current_user.update!(address: params[:user][:address])
-  #     end
-  #
-  #     # Calculate the total price of the cart
-  #     total_price = cart.total_price
-  #     if params[:delivery_method] == 'home_delivery'
-  #       total_price += 60
-  #     end
-  #
-  #     status = params[:payment_method] == 'online_payment' ? 'pending_payment' : 'processing'
-  #     delivery_method = params[:delivery_method] == 'home_delivery' ? 'home_delivery' : 'store_pickup'
-  #
-  #     order = Order.create!(
-  #       user: current_user,
-  #       delivery_address: params[:user][:address],
-  #       payment_method: params[:payment_method],
-  #       total_price: total_price,
-  #       status: status,
-  #       delivery_method: delivery_method
-  #     )
-  #
-  #     cart.cart_items.each do |cart_item|
-  #       OrderItem.create!(
-  #         order: order,
-  #         product: cart_item.product,
-  #         quantity: cart_item.quantity,
-  #         price: cart_item.product.price
-  #       )
-  #     end
-  #
-  #     cart.destroy
-  #   end
-  #
-  #   if params[:payment_method] == 'online_payment'
-  #     redirect_to stripe_payment_orders_path, notice: 'Your order is awaiting payment confirmation.'
-  #   else
-  #     redirect_to carts_path, notice: 'Order was successfully created.'
-  #   end
-  # rescue ActiveRecord::RecordInvalid => e
-  #   flash[:error] = "Failed to create order: #{e.message}"
-  #   render :new
-  # end
 
   def create
     order = nil
@@ -96,6 +49,7 @@ class OrdersController < ApplicationController
       end
 
       cart.destroy
+      OrderConfirmationMailer.order_confirmation(current_user, order, order.order_items.pluck(:id)).deliver_later
     end
 
     if params[:payment_method] == 'online_payment'
@@ -141,19 +95,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # def stripe_payment
-  #   # Fetch the latest order of the current user
-  #   @order = current_user.orders.order(created_at: :desc).first
-  #
-  #   # If there's no order or the order is not pending payment, redirect the user
-  #   if @order.nil? || @order.status != 'pending_payment'
-  #     redirect_to root_path, alert: 'No pending payment found.'
-  #     return
-  #   end
-  #
-  #   # Fetch the total price of the order
-  #   @total_price = @order.total_price
-  # end
 
   def stripe_payment
     @order = Order.find(params[:id])
@@ -197,7 +138,7 @@ class OrdersController < ApplicationController
         source: token
       )
 
-      Stripe::Charge.create(
+      charge =  Stripe::Charge.create(
         customer: customer.id,
         amount: @total_price_usd_cents,
         description: 'Your Order',
@@ -206,6 +147,8 @@ class OrdersController < ApplicationController
 
       # Update the order status and is_payment_completed attribute
       @order.update!(status: 'processing', is_payment_completed: true)
+      @order.update!(stripe_charge_id: charge.id)
+      PaymentConfirmationMailer.payment_confirmation_email(current_user, @order).deliver_later
     end
 
     render plain: 'success'

@@ -1,0 +1,21 @@
+<h1>Payment Confirmation</h1>
+
+<p>Hello, <%= @user.full_name %>,</p>
+
+<p>We have received your payment for order <%= @order.order_number %>.</p>
+
+<p>Charge ID: <%= @charge_data[:charge_id] %></p>
+<p>Amount paid: $<%= @charge_data[:amount_paid] %></p>
+
+<p>Order details:</p>
+<% @order.order_items.each do |order_item| %>
+  <p>
+    Product: <%= order_item.product.name %><br>
+    Quantity: <%= order_item.quantity %><br>
+    Price: $<%= order_item.price %>
+  </p>
+<% end %>
+
+<p>Total price: $<%= @order.total_price %></p>
+
+<p>Thank you for your purchase!</p>

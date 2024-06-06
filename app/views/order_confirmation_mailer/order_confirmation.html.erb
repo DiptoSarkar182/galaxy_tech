@@ -1,0 +1,13 @@
+<h1 style="font-size: 20px; color: blue;">Order Confirmation</h1>
+<p style="font-size: 16px;">Hello, <%= @user.full_name %></p>
+<p>Your order was created at <%= @order.created_at %></p>
+<p>Delivery address: <%= @order.delivery_address %></p>
+<p>Order details:</p>
+<% @order_items.each do |order_item| %>
+  <p style="margin-bottom: 20px;">
+    <span style="font-weight: bold;">Name:</span> <%= order_item.product.name %><br>
+    <span style="font-weight: bold;">Price:</span> <%= order_item.price %><br>
+    <span style="font-weight: bold;">Quantity:</span> <%= order_item.quantity %>
+  </p>
+<% end %>
+<p style="font-size: 18px; font-weight: bold;">Total price: <%= @order.total_price %></p>
