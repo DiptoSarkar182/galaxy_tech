@@ -31,7 +31,8 @@ complete their purchase.
 
 - **Order History:** Users can view their past orders, including the purchased items, quantities, and total cost.
 
-- **Email Service:** Through sendgrid email service, users are able to confirm account and reset password. 
+- **Email Service:** Through sendgrid email service, users are able to confirm account and reset password. Upon signing
+up, user will receive welcome email and their orders and payment confirmation emails.
 
 [//]: # (- **Product Reviews:** Users can leave reviews for products they've purchased, including a rating and comments.)
 
@@ -59,7 +60,6 @@ complete their purchase.
 - UI/UX improvement
 - Admin can manage and view all users orders and the site content.
 - Rating and review for each product.
-- Email service for new user sign up, order confirmation.
 
 ## Getting Started
 
