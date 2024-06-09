@@ -82,3 +82,5 @@ gem 'stripe-rails'
 gem "money-rails", "~> 1.15"
 
 gem 'money-open-exchange-rates'
+
+gem "tailwindcss-rails", "~> 2.6"
