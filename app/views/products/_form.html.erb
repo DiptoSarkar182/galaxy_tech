@@ -1,8 +1,8 @@
-<%= form_with(model: product) do |form| %>
+<%= form_with(model: product, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
   <% if product.errors.any? %>
-    <div role="alert" >
-      <h2 ><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-      <ul>
+    <div role="alert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" >
+      <h2 class="font-bold"><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul class="mt-3 list-disc list-inside">
         <% product.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -10,33 +10,33 @@
     </div>
   <% end %>
 
-  <div >
-    <%= form.label :product_image, "Attach photo (Max Size 5MB):" %>
-    <%= form.file_field :product_image, accept: 'image/png,image/gif,image/jpeg,image/webp'%>
+  <div class="mb-4">
+    <%= form.label :product_image, "Attach photo (Max Size 5MB):", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.file_field :product_image, accept: 'image/png,image/gif,image/jpeg,image/webp', class: "shadow appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div >
-    <%= form.label "Name:" %>
-    <%= form.text_field :name, placeholder: "" %>
+  <div class="mb-4">
+    <%= form.label "Name:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.text_field :name, placeholder: "", class: "shadow appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div>
-    <%= form.label :price, "Price (USD):" %>
-    <%= form.number_field :price, step: 0.01, min: 0 %>
+  <div class="mb-4">
+    <%= form.label :price, "Price (USD):", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.number_field :price, step: 0.01, min: 0, class: "shadow appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div>
-    <%= form.label "Quantity:" %>
-    <%= form.number_field :quantity, step: 1, min: 0 %>
+  <div class="mb-4">
+    <%= form.label "Quantity:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.number_field :quantity, step: 1, min: 0, class: "shadow appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div >
-    <%= form.label "Brand Name:" %>
-    <%= form.text_field :brand, placeholder: "" %>
+  <div class="mb-4">
+    <%= form.label "Brand Name:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.text_field :brand, placeholder: "", class: "shadow appearance-none border rounded w-1/8 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div>
-    <%= form.label "Which Component:" %>
+  <div class="mb-4">
+    <%= form.label "Which Component:", class: "block text-gray-700 font-bold mb-2" %>
     <%= form.select :component, options_for_select([
                                                      ["Processor", "Processor"],
                                                      ["CPU Cooler", "CPU Cooler"],
@@ -56,25 +56,25 @@
                                                      ["Phone", "Phone"],
                                                      ["Optical Disk Drive", "Optical Disk Drive"],
                                                      ["Vertical Graphics Card Holder", "Vertical Graphics Card Holder"]
-                                                   ].sort, selected: @product.component), include_blank: "Select Component" %>
+                                                   ].sort, selected: @product.component), include_blank: "Select Component", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div >
-    <%= form.label "Key features:" %>
-    <%= form.rich_text_area :key_features, placeholder: "" %>
+  <div class="mb-4">
+    <%= form.label "Key features:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.rich_text_area :key_features, placeholder: "", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div >
-    <%= form.label "Specifications:" %>
-    <%= form.rich_text_area :specification, placeholder: "" %>
+  <div class="mb-4">
+    <%= form.label "Specifications:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.rich_text_area :specification, placeholder: "", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div >
-    <%= form.label "Description:" %>
-    <%= form.rich_text_area :description, placeholder: "" %>
+  <div class="mb-6">
+    <%= form.label "Description:", class: "block text-gray-700 font-bold mb-2" %>
+    <%= form.rich_text_area :description, placeholder: "", class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
   </div>
 
-  <div>
-    <%= form.submit  %>
+  <div class="flex items-center justify-between">
+    <%= form.submit "Submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
   </div>
-<%end %>
+<% end %>

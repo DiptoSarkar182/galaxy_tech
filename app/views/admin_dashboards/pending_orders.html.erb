@@ -1,44 +1,44 @@
-<h1>
+<h1 class="text-2xl font-bold mb-4 text-center">
   Pending orders
 </h1>
 
-<table>
-  <thead>
-  <tr>
-    <th>Customer Name</th>
-    <th>Order Number</th>
-    <th>Total Price</th>
-    <th>Order Status</th>
-    <th>Order Items</th>
-    <th>Action</th>
+<table class="w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+  <tr class="bg-gray-100 border-b">
+    <th class="px-4 py-2 border-r border-gray-200">Customer Name</th>
+    <th class="px-4 py-2 border-r border-gray-200">Order Number</th>
+    <th class="px-4 py-2 border-r border-gray-200">Total Price</th>
+    <th class="px-4 py-2 border-r border-gray-200">Order Status</th>
+    <th class="px-4 py-2 border-r border-gray-200">Order Items</th>
+    <th class="px-4 py-2 border-r border-gray-200">Action</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="bg-white divide-y divide-gray-200">
   <% @pending_orders.each do |pending_order| %>
-    <tr>
-      <td><%= pending_order.user.full_name %></td>
-      <td><%= pending_order.order_number %></td>
-      <td><%= pending_order.total_price %></td>
-      <td><%= pending_order.status %></td>
-      <td>
-        <table>
-          <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
+    <tr class="border-b">
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order.user.full_name %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order.order_number %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order.total_price %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order.status %></td>
+      <td class="px-4 py-2 border-r border-gray-200">
+        <table class="w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+          <tr class="bg-gray-100 border-b">
+            <th class="px-4 py-2 border-r border-gray-200">Product Name</th>
+            <th class="px-4 py-2 border-r border-gray-200">Quantity</th>
           </tr>
           </thead>
-          <tbody>
+          <tbody class="bg-white divide-y divide-gray-200">
           <% pending_order.order_items.each do |pending_order_item| %>
-            <tr>
-              <td><%= pending_order_item.product.name %></td>
-              <td><%= pending_order_item.quantity %></td>
+            <tr class="border-b">
+              <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order_item.product.name %></td>
+              <td class="px-4 py-2 border-r border-gray-200 text-center"><%= pending_order_item.quantity %></td>
             </tr>
           <% end %>
           </tbody>
         </table>
       </td>
-      <td><%= link_to "View Order", admin_dashboard_path(pending_order) %></td>
+      <td class="px-4 py-2 px-4 py-2 flex space-x-2"><%= link_to "View Order", admin_dashboard_path(pending_order), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %></td>
     </tr>
   <% end %>
   </tbody>

@@ -15,6 +15,6 @@ export default class extends Controller {
     hideMenu() {
         this.timeoutId = setTimeout(() => {
             this.menuTarget.classList.add('hidden');
-        }, 200); // Delay to prevent menu from disappearing too quickly
+        }, 200);
     }
 }

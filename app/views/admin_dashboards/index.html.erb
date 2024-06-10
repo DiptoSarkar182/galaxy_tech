@@ -1,22 +1,35 @@
-<h1 class="text-2xl font-bold text-gray-800 mb-4">hello from admin dashboard</h1>
+<div class="bg-gray-100 min-h-screen py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Admin Dashboard</h1>
 
-<div>
-  <h2>User Statistics</h2>
-  <p>Total Users: <%= @total_users %></p>
-  <p>Confirmed Users: <%= @confirmed_users %></p>
-  <p>Unconfirmed Users: <%= @unconfirmed_users %></p>
-  <p>Admin Users: <%= @admin_users %></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-2 text-center">User Statistics</h2>
+        <p class="text-gray-600 mb-2">Total Users: <%= @total_users %></p>
+        <p class="text-gray-600 mb-2">Confirmed Users: <%= @confirmed_users %></p>
+        <p class="text-gray-600 mb-2">Unconfirmed Users: <%= @unconfirmed_users %></p>
+        <p class="text-gray-600">Admin Users: <%= @admin_users %></p>
+      </div>
 
-  <h2>Total Sales Over Time</h2>
-  <%= line_chart @total_sales_over_time, library: {animation: {duration: 1000}} %>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-center">Total Sales Over Time</h2>
+        <%= line_chart @total_sales_over_time, library: {animation: {duration: 1000}}, class: "h-64" %>
+      </div>
 
-  <h2>Top Selling Products</h2>
-  <%= column_chart @top_selling_products, library: {animation: {duration: 1000}} %>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-center">Top Selling Products</h2>
+        <%= column_chart @top_selling_products, library: {animation: {duration: 1000}}, class: "h-64" %>
+      </div>
 
-  <h2>Sales by Payment Method</h2>
-  <%= pie_chart @sales_by_payment_method, library: {animation: {duration: 1000}} %>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-center">Sales by Payment Method</h2>
+        <%= pie_chart @sales_by_payment_method, library: {animation: {duration: 1000}}, class: "h-64" %>
+      </div>
 
-  <h2>Products by Component</h2>
-  <%= pie_chart @products_by_component, donut: true, library: {animation: {duration: 1000}} %>
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4 text-center">Products by Component</h2>
+        <%= pie_chart @products_by_component, donut: true, library: {animation: {duration: 1000}}, class: "h-64" %>
+      </div>
+    </div>
+  </div>
 </div>
-

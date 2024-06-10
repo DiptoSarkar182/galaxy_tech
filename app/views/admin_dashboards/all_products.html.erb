@@ -1,33 +1,33 @@
-<h1>All the products</h1>
-<table>
-  <thead>
-  <tr>
-    <th>Image</th>
-    <th><%= sort_link @q, :name %></th>
-    <th><%= sort_link @q, :price %></th>
-    <th><%= sort_link @q, :quantity %></th>
-    <th><%= sort_link @q, :brand %></th>
-    <th><%= sort_link @q, :component %></th>
-    <th><%= sort_link @q, :created_at %></th>
-    <th><%= sort_link @q, :updated_at %></th>
-    <th>Actions</th>
+<h1 class="text-2xl font-bold mb-4 text-center">All the products</h1>
+<table class="w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+  <tr class="bg-gray-100 border-b">
+    <th class="px-4 py-2 border-r border-gray-200">Image</th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :name %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :price %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :quantity %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :brand %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :component %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :created_at %></th>
+    <th class="px-4 py-2 border-r border-gray-200"><%= sort_link @q, :updated_at %></th>
+    <th class="px-4 py-2 border-r border-gray-200">Actions</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="bg-white divide-y divide-gray-200">
   <% @products.each do |product| %>
-    <tr>
-      <td><%= image_tag product.product_image %></td>
-      <td><%= product.name %></td>
-      <td><%= product.price %></td>
-      <td><%= product.quantity %></td>
-      <td><%= product.brand %></td>
-      <td><%= product.component %></td>
-      <td><%= product.created_at.strftime("%d %b %Y %I:%M:%S %p") %></td>
-      <td><%= product.updated_at.strftime("%d %b %Y %I:%M:%S %p") %></td>
-      <td>
-        <%= link_to 'View', product_path(product) %>
-        <%= link_to 'Edit', edit_product_path(product) %>
-        <%= link_to "Delete", product_path(product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+    <tr class="border-b">
+      <td class="px-4 py-2 border-r border-gray-200 flex justify-center items-center"><%= image_tag product.product_image, class: "h-16" %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.name %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.price %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.quantity %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.brand %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.component %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.created_at.strftime("%d %b %Y %I:%M:%S %p") %></td>
+      <td class="px-4 py-2 border-r border-gray-200 text-center"><%= product.updated_at.strftime("%d %b %Y %I:%M:%S %p") %></td>
+      <td class="px-4 py-2 px-4 py-2 flex space-x-2">
+        <%= link_to 'View', product_path(product), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+        <%= link_to 'Edit', edit_product_path(product), class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+        <%= link_to "Delete", product_path(product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
       </td>
     </tr>
   <% end %>

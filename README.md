@@ -48,11 +48,14 @@ up, user will receive welcome email and their orders and payment confirmation em
 - Active Storage
 - TailwindCSS
 - Cloudinary
+- Action Mail
+- Stripe
 
 ## Screenshots
 
 
 ![SS1](./app/assets/images/ss1.PNG)
+![SS2](./app/assets/images/ss2.PNG)
 
 
 ## Getting Started
@@ -73,7 +76,9 @@ You need to have Ruby and Rails installed on your machine. See [this guide](http
 6. Visit `http://localhost:3000/` in your browser to access the application.
 
 
-- Galaxy Tech logo made by https://dribbble.com/Fahimsarfi
-- <a target="_blank" href="https://icons8.com/icon/59997/shopping-cart">Cart, <a target="_blank" href="https://icons8.com/icon/65342/customer">Customer</a>
-</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+Galaxy Tech logo made by **[Fahim Haque](https://dribbble.com/Fahimsarfi)**
+
+All product data were sourced from **[Startech](https://www.startech.com.bd/)**. Please note that this data is used for educational purposes and not for commercial use.
+
+[Cart](https://icons8.com/icon/59997/shopping-cart), [Customer](https://icons8.com/icon/65342/customer) icon by [Icons8](https://icons8.com)
 

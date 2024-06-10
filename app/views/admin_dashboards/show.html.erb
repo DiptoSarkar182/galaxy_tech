@@ -1,30 +1,40 @@
-<div>
-  <span class="font-bold">Customer Name:</span> <%= @pending_order.user.full_name %>
-</div>
-<div>
-  <span class="font-bold">Order Number:</span> <%= @pending_order.order_number %>
-</div>
-<div>
-  <span class="font-bold">Total Price:</span> <%= @pending_order.total_price %>
-</div>
-<div>
-  <% @pending_order.order_items.each do |pending_order_item| %>
-    <div>
-      <span class="font-bold">Product Name:</span> <%= pending_order_item.product.name %>
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+  <div class="px-6 py-4">
+    <div class="flex items-center mb-4">
+      <span class="font-bold text-gray-700 mr-2">Customer Name:</span>
+      <span class="text-gray-800"><%= @pending_order.user.full_name %></span>
     </div>
-    <div>
-      <span class="font-bold">Quantity:</span> <%= pending_order_item.quantity %>
+    <div class="flex items-center mb-4">
+      <span class="font-bold text-gray-700 mr-2">Order Number:</span>
+      <span class="text-gray-800"><%= @pending_order.order_number %></span>
     </div>
-  <% end %>
-</div>
+    <div class="flex items-center mb-4">
+      <span class="font-bold text-gray-700 mr-2">Total Price:</span>
+      <span class="text-gray-800"><%= @pending_order.total_price %></span>
+    </div>
+  </div>
 
-<div>
-  Update Order Status
-</div>
+  <div class="bg-gray-100 px-6 py-4">
+    <h3 class="font-bold text-gray-700 mb-2">Order Items:</h3>
+    <% @pending_order.order_items.each do |pending_order_item| %>
+      <div class="flex items-center mb-2">
+        <span class="font-bold text-gray-700 mr-2">Product Name:</span>
+        <span class="text-gray-800"><%= pending_order_item.product.name %></span>
+      </div>
+      <div class="flex items-center mb-4">
+        <span class="font-bold text-gray-700 mr-2">Quantity:</span>
+        <span class="text-gray-800"><%= pending_order_item.quantity %></span>
+      </div>
+    <% end %>
+  </div>
 
-<div>
-  <%= form_with(model: @pending_order, url: change_customer_order_status_admin_dashboard_path) do |form| %>
-    <%= form.select :status, ['Processing', 'Shipped', 'Delivered'], {selected: @pending_order.status.capitalize} %>
-    <%= form.submit 'Update Order Status' %>
-  <% end %>
+  <div class="px-6 py-4 bg-white">
+    <h3 class="font-bold text-gray-700 mb-4">Update Order Status</h3>
+    <%= form_with(model: @pending_order, url: change_customer_order_status_admin_dashboard_path) do |form| %>
+      <div class="mb-4">
+        <%= form.select :status, ['Processing', 'Shipped', 'Delivered'], { selected: @pending_order.status.capitalize }, class: "shadow appearance-none border rounded w-1/5 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+      <%= form.submit 'Update Order Status', class: 'px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500' %>
+    <% end %>
+  </div>
 </div>
