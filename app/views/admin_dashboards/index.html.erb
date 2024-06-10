@@ -1,13 +1,22 @@
-<h1>hello from admin dashboard</h1>
+<h1 class="text-2xl font-bold text-gray-800 mb-4">hello from admin dashboard</h1>
 
 <div>
-  <%= link_to "Add new product", new_product_path %>
+  <h2>User Statistics</h2>
+  <p>Total Users: <%= @total_users %></p>
+  <p>Confirmed Users: <%= @confirmed_users %></p>
+  <p>Unconfirmed Users: <%= @unconfirmed_users %></p>
+  <p>Admin Users: <%= @admin_users %></p>
+
+  <h2>Total Sales Over Time</h2>
+  <%= line_chart @total_sales_over_time, library: {animation: {duration: 1000}} %>
+
+  <h2>Top Selling Products</h2>
+  <%= column_chart @top_selling_products, library: {animation: {duration: 1000}} %>
+
+  <h2>Sales by Payment Method</h2>
+  <%= pie_chart @sales_by_payment_method, library: {animation: {duration: 1000}} %>
+
+  <h2>Products by Component</h2>
+  <%= pie_chart @products_by_component, donut: true, library: {animation: {duration: 1000}} %>
 </div>
 
-<div>All the products</div>
-
-<div >
-  <% @products.each do |product| %>
-    <%= render 'admin_dashboards/product', product: product %>
-  <% end %>
-</div>

@@ -55,12 +55,6 @@ up, user will receive welcome email and their orders and payment confirmation em
 ![SS1](./app/assets/images/ss1.PNG)
 
 
-## Future Features
-
-- UI/UX improvement
-- Admin can manage and view all users orders and the site content.
-- Rating and review for each product.
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.

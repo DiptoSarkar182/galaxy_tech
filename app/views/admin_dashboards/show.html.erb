@@ -1,0 +1,30 @@
+<div>
+  <span class="font-bold">Customer Name:</span> <%= @pending_order.user.full_name %>
+</div>
+<div>
+  <span class="font-bold">Order Number:</span> <%= @pending_order.order_number %>
+</div>
+<div>
+  <span class="font-bold">Total Price:</span> <%= @pending_order.total_price %>
+</div>
+<div>
+  <% @pending_order.order_items.each do |pending_order_item| %>
+    <div>
+      <span class="font-bold">Product Name:</span> <%= pending_order_item.product.name %>
+    </div>
+    <div>
+      <span class="font-bold">Quantity:</span> <%= pending_order_item.quantity %>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  Update Order Status
+</div>
+
+<div>
+  <%= form_with(model: @pending_order, url: change_customer_order_status_admin_dashboard_path) do |form| %>
+    <%= form.select :status, ['Processing', 'Shipped', 'Delivered'], {selected: @pending_order.status.capitalize} %>
+    <%= form.submit 'Update Order Status' %>
+  <% end %>
+</div>

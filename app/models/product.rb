@@ -1,7 +1,7 @@
 class Product < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
-    ["name", "price", "component", "brand", "quantity"]
+    ["name", "price", "component", "brand", "quantity", "created_at", "updated_at"]
   end
 
 

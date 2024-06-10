@@ -48,6 +48,14 @@ Rails.application.routes.draw do
   end
 
 
-  resources :admin_dashboards, only: [:index, :create, :destroy]
+  resources :admin_dashboards do
+    collection do
+      get :pending_orders
+      get :all_products
+    end
+    member do
+      patch :change_customer_order_status
+    end
+  end
 
 end
