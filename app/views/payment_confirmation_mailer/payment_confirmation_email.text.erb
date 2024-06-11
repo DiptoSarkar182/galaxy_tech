@@ -1,0 +1,19 @@
+Payment Confirmation
+
+Hello, <%= @user.full_name %>,
+
+We have received your payment for order <%= @order.order_number %>.
+
+Charge ID: <%= @charge_data[:charge_id] %>
+Amount paid: $<%= @charge_data[:amount_paid] %>
+
+Order details:
+<% @order.order_items.each do |order_item| %>
+  Product: <%= order_item.product.name %>
+  Quantity: <%= order_item.quantity %>
+  Price: $<%= order_item.price %>
+<% end %>
+
+Total price: $<%= @order.total_price %>
+
+Thank you for your purchase!

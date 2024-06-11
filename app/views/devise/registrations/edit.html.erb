@@ -34,13 +34,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
       <div>
         <%= f.label :password, class: "block text-gray-700 font-bold mb-2" %>
-        <%= f.password_field :password, placeholder: "6 characters minimum", autocomplete: "new-password", class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
         <div class="text-gray-600 mt-1">
           <i>(leave blank if you don't want to change it)</i>
         </div>
-        <%# if @minimum_password_length %>
-<!--          <em class="text-gray-600 mt-1"><%#= @minimum_password_length %> characters minimum</em>-->
-        <%# end %>
+        <% if @minimum_password_length %>
+          <em class="text-gray-600 mt-1"><%= @minimum_password_length %> characters minimum</em>
+        <% end %>
       </div>
 
       <div>

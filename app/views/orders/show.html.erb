@@ -63,6 +63,8 @@
         <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md shadow-md" %>
       <% elsif @order.payment_method == 'online_payment' && @order.is_payment_completed == false %>
         <%= button_to "Cancel Order", order_path(@order), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-md shadow-md" %>
+      <% elsif @order.status == 'delivered' %>
+        <div class="text-sm text-gray-600">Order has been delivered.</div>
       <% else %>
         <div class="text-sm text-gray-600">Order cannot be canceled now. If you wish to cancel, please refuse delivery.</div>
       <% end %>
