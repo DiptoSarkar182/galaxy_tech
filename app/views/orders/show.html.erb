@@ -1,7 +1,11 @@
 <div class="container mx-auto py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
-    <div class="mb-4">
-      <h2 class="text-lg font-semibold text-gray-800">Order ID: <%= @order.order_number %></h2>
+    <div class="mb-4" data-controller="clipboard">
+      <h2 class="text-lg font-semibold text-gray-800">
+        Order ID:
+        <span id="order-id" data-clipboard-target="source"><%= @order.order_number %></span>
+        <button type="button" data-action="clipboard#copy" data-clipboard-target="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded transition-all duration-300 transform hover:scale-105">Copy Order ID</button>
+      </h2>
       <p class="text-sm text-gray-600">Placed on: <%= @order.created_at.strftime("%d %b %Y %I:%M:%S %p") %></p>
       <p class="text-sm text-gray-600">Order status: <%= @order.status %></p>
     </div>
@@ -41,6 +45,9 @@
         <p class="text-sm text-gray-600">CASH ON DELIVERY</p>
       <% else %>
         <p class="text-sm text-gray-600">ONLINE PAYMENT</p>
+        <% if @order.is_payment_completed? %>
+          <p class="text-sm text-gray-600">Stripe Charge ID: <%= @order.stripe_charge_id %></p>
+        <% end %>
       <% end %>
     </div>
 
