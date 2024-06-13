@@ -24,6 +24,9 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @cart = current_user.cart if user_signed_in?
     @title = @product.name
+    average_rating = ProductRatingAndReview.where(product_id: @product.id).average(:rating)
+    @average_rating = average_rating ? average_rating.round(2) : nil
+    @rating_count = ProductRatingAndReview.where(product_id: @product.id).count
   end
 
   def edit

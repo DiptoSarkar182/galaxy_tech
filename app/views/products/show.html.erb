@@ -28,6 +28,14 @@
         <% end %>
       </div>
       <p class="text-gray-600 mb-4">Brand: <%= @product.brand %></p>
+      <p class="text-gray-600 mb-4">
+        Rating:
+        <% if @average_rating.nil? %>
+          Nobody rated yet
+        <% else %>
+          <%= @average_rating %> (based on <%= @rating_count %> ratings)
+        <% end %>
+      </p>
       <div class="mb-4">
         <% if user_signed_in? %>
           <turbo-frame id="add_to_cart_increase_decrease_quantity">

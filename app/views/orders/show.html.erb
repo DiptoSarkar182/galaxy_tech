@@ -33,6 +33,16 @@
             <div class="ml-4">
               <div class="text-sm font-medium text-gray-900"><%= item.product.name %></div>
               <div class="text-sm text-gray-600">Quantity: <%= item.quantity %></div>
+              <div>
+                  <%#= link_to "Give rating and review", order_product_ratings_and_review_path(order_id: @order.id, id: item.product.id) %>
+                <% if @order.status == 'delivered' %>
+                  <% if ProductRatingAndReview.exists?(user_id: current_user.id, order_id: @order.id, product_id: item.product.id) %>
+                    <div>You already rated this product.</div>
+                  <% else %>
+                    <%= link_to "Give rating and review", new_order_product_ratings_and_review_path(@order, product_id: item.product.id) %>
+                  <% end %>
+                <% end %>
+              </div>
             </div>
           </li>
         <% end %>

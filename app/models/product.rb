@@ -16,6 +16,7 @@ class Product < ApplicationRecord
   has_many :cart_items, dependent: :destroy
   has_many :order_items
   has_many :carts, through: :cart_items, dependent: :destroy
+  has_many :product_rating_and_reviews, dependent: :destroy
 
   before_destroy :purge_product_image
   before_update :purge_product_image, if: :product_image_changed?

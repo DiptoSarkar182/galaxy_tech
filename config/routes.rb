@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   resources :orders do
+    resources :product_ratings_and_reviews
     collection do
       get :checkout
       post :submit_stripe_payment
