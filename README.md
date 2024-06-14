@@ -19,7 +19,10 @@ Please note that the app is hosted on a free tier and may take a moment to load 
 reset password, sign in with google. Passwords are securely hashed and stored.
 
 - **Product Catalog:** A wide range of PC components are listed. Each product has a detailed description, price, 
-and image.
+, image, rating and reviews.
+
+- **Ratings and Reviews:** After delivery is complete, user can provide rating and review of the received product. User
+can also edit their ratings and reviews. 
 
 - **Search and Filter:** Users can search for products by name or filter by categories such as CPUs, GPUs, RAM, 
 and SSDs.
