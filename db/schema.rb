@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_12_172112) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_14_074659) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -104,6 +104,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_172112) do
     t.decimal "rating", precision: 10, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "review"
     t.index ["order_id"], name: "index_product_rating_and_reviews_on_order_id"
     t.index ["product_id"], name: "index_product_rating_and_reviews_on_product_id"
     t.index ["user_id"], name: "index_product_rating_and_reviews_on_user_id"

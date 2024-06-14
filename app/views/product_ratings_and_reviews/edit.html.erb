@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto p-4 bg-white rounded-md shadow-md">
-  <h1 class="text-2xl font-bold mb-4 text-center"><%= @product.name %> - Provide rating and review</h1>
+  <h1 class="text-2xl font-bold mb-4 text-center"><%= @product.name %> - Edit rating and review of this product</h1>
 
-  <%= form_with(model: [@order, @product_rating_and_review], url: order_product_ratings_and_reviews_path(@order), class: 'space-y-6') do |form| %>
+  <%= form_with(model: [@order, @product_rating_and_review], url: order_product_ratings_and_review_path(@order, @product_rating_and_review), method: :patch, class: 'space-y-6') do |form| %>
 
     <%= form.hidden_field :order_id %>
     <%= form.hidden_field :product_id %>

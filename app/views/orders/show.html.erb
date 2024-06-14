@@ -36,10 +36,10 @@
               <div>
                   <%#= link_to "Give rating and review", order_product_ratings_and_review_path(order_id: @order.id, id: item.product.id) %>
                 <% if @order.status == 'delivered' %>
-                  <% if ProductRatingAndReview.exists?(user_id: current_user.id, order_id: @order.id, product_id: item.product.id) %>
-                    <div>You already rated this product.</div>
+                  <% if @product_ids_with_reviews.include?(item.product.id) %>
+                    <%= link_to "Edit Rating and Review", edit_order_product_ratings_and_review_path(@order, product_id: item.product.id), class: "text-l text-blue-400" %>
                   <% else %>
-                    <%= link_to "Give rating and review", new_order_product_ratings_and_review_path(@order, product_id: item.product.id) %>
+                    <%= link_to "Give Rating and Review", new_order_product_ratings_and_review_path(@order, product_id: item.product.id), class: "text-l text-blue-400" %>
                   <% end %>
                 <% end %>
               </div>
@@ -85,6 +85,7 @@
       <% else %>
         <div class="text-sm text-gray-600">Order cannot be canceled now. If you wish to cancel, please refuse delivery.</div>
       <% end %>
+      <%= link_to "Back to orders page", orders_path, class: "text-l text-blue-400" %>
     </div>
   </div>
 </div>

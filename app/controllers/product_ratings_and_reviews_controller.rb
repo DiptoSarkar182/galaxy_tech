@@ -26,11 +26,32 @@ class ProductRatingsAndReviewsController < ApplicationController
     end
   end
 
+  def edit
+    @order = Order.find_by(id: params[:order_id])
+    @product = Product.find_by(id: params[:product_id])
+    @product_rating_and_review = ProductRatingAndReview.find_by(order_id: @order&.id, product_id: @product&.id, user_id: current_user.id)
+
+    unless @order && @product_rating_and_review
+      flash[:alert] = "There was an error editing this review."
+      redirect_to order_path(@order)
+    end
+  end
+
+  def update
+    @product_rating_and_review = ProductRatingAndReview.find(params[:id])
+
+    if @product_rating_and_review.update(product_rating_and_review_params)
+      redirect_to order_path(@product_rating_and_review.order), notice: 'Review was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
 
   private
 
   def product_rating_and_review_params
-    params.require(:product_rating_and_review).permit(:rating, :order_id, :product_id)
+    params.require(:product_rating_and_review).permit(:rating, :order_id, :product_id, :review)
   end
 
 end

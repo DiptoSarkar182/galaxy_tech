@@ -27,6 +27,7 @@ class ProductsController < ApplicationController
     average_rating = ProductRatingAndReview.where(product_id: @product.id).average(:rating)
     @average_rating = average_rating ? average_rating.round(2) : nil
     @rating_count = ProductRatingAndReview.where(product_id: @product.id).count
+    @product_reviews = ProductRatingAndReview.where(product_id: @product)
   end
 
   def edit

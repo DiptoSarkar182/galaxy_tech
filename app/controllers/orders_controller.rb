@@ -65,6 +65,7 @@ class OrdersController < ApplicationController
   def show
     begin
       @order = Order.find(params[:id])
+      @product_ids_with_reviews = ProductRatingAndReview.where(user_id: current_user.id, order_id: @order.id).pluck(:product_id)
     rescue ActiveRecord::RecordNotFound
       redirect_to orders_path # or wherever you want to redirect
     end
