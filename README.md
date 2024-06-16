@@ -18,7 +18,7 @@ To test the application with an account that has admin privileges, use the follo
 **Email:** testadmin@gmail.com
 **Password:** 123456
 
-Please note: The test admin account does not have permission to delete products.
+Please note that the test admin account does not have permission to delete products.
 
 ## Features
 
