@@ -1,6 +1,8 @@
 class ProductsController < ApplicationController
 
   before_action :authenticate_admin, only: [:new, :edit, :create, :update]
+  before_action :test_admin_cannot_delete_product, only: [:destroy]
+
   def index
     @products = Product.page(params[:page]).per(18)
   end
@@ -138,7 +140,6 @@ class ProductsController < ApplicationController
           render turbo_stream: turbo_stream.update("search_product_by_component_add_inc_dec_#{@product.id}", partial: "search_product_by_component_add_inc_dec", locals: { product: @product }) +
             turbo_stream.update("cart_info", partial: "cart_items/cart_info", locals: { cart: @cart })
         end
-        # format.html { redirect_to product_path(params[:product_id]) }
       end
     else
       respond_to do |format|
@@ -162,6 +163,12 @@ class ProductsController < ApplicationController
   def authenticate_admin
     unless current_user&.admin?
       redirect_to root_path, alert: 'Access denied!'
+    end
+  end
+
+  def test_admin_cannot_delete_product
+    if current_user&.admin? && current_user.email == 'testadmin@gmail.com'
+      redirect_to root_path, alert: 'Test admin does not have permission to delete this product.!'
     end
   end
 

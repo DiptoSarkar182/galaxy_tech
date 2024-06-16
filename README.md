@@ -13,6 +13,13 @@ engine to help you find exactly what you need.
 You can see a live version of the app **[here](https://galaxy-tech.onrender.com)**.
 Please note that the app is hosted on a free tier and may take a moment to load if it has been inactive.
 
+To test the application with an account that has admin privileges, use the following credentials:
+
+**Email:** testadmin@gmail.com
+**Password:** 123456
+
+Please note: The test admin account does not have permission to delete products.
+
 ## Features
 
 - **User Authentication:** Implemented with Devise gem. Users can sign up, log in, log out, confirm account, 
