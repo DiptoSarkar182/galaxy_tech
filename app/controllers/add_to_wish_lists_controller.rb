@@ -1,4 +1,5 @@
 class AddToWishListsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @wishlist_products = current_user.add_to_wish_lists.map(&:product)
