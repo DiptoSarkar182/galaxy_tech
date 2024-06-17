@@ -59,4 +59,6 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :add_to_wish_lists
+
 end

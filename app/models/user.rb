@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :product_rating_and_reviews, dependent: :destroy
+  has_many :add_to_wish_lists
+  has_many :products, through: :add_to_wish_lists
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|

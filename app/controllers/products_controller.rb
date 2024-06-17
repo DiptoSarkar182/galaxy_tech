@@ -30,6 +30,7 @@ class ProductsController < ApplicationController
     @average_rating = average_rating ? average_rating.round(2) : nil
     @rating_count = ProductRatingAndReview.where(product_id: @product.id).count
     @product_reviews = ProductRatingAndReview.where(product_id: @product)
+    @wishlist_item = current_user.add_to_wish_lists.find_by(product: @product) if user_signed_in?
   end
 
   def edit
