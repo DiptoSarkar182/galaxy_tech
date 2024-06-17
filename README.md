@@ -36,6 +36,8 @@ and SSDs.
 
 - **Shopping Cart:** Users can add products to a shopping cart and adjust quantities as needed.
 
+- **Add To Wishlist:** Users can add or remove products from their wishlists.
+
 - **Checkout and Payment:** Integrated with Stripe for payment processing. Users can enter their payment details and 
 complete their purchase.
 
