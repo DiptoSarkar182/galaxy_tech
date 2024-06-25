@@ -48,7 +48,8 @@ up, user will receive welcome email and their orders and payment confirmation em
 
 [//]: # (- **Product Reviews:** Users can leave reviews for products they've purchased, including a rating and comments.)
 
-- **Admin Panel:** Admin users can add, edit, or remove products.
+- **Admin Panel:** Admin can see the financial based and user info from 
+admin dashboard, update users order status from pending orders and view all the products list to edit and delete.
 
 
 ## Technology Used
