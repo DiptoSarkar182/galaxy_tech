@@ -8,7 +8,7 @@
     <div class="md:w-1/2 md:pl-8">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-3xl font-bold text-gray-800"><%= @product.name %></h1>
-        <% if current_user && current_user.admin? %>
+        <% if user_signed_in? && current_user.admin? %>
           <div class="flex space-x-2">
             <%= link_to "Edit", edit_product_path(@product), class: "px-3 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors duration-300" %>
             <%= link_to "Delete", product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-300" %>
@@ -20,7 +20,7 @@
       </p>
       <div>
         <turbo-frame id="add_to_wishlist_button">
-          <% if user_signed_in? %>
+          <% if user_signed_in? && !current_user.admin? %>
             <% if @wishlist_item %>
               <%= button_to "Remove from wishlist", add_to_wish_list_path(@wishlist_item), method: :delete, class: "px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-300" %>
             <% else %>
@@ -30,7 +30,7 @@
         </turbo-frame>
       </div>
       <div class="mb-4">
-        <% if current_user && current_user.admin? %>
+        <% if user_signed_in? && current_user.admin? %>
           <p class="text-gray-600">Quantity: <%= @product.quantity %></p>
         <% else %>
           <p class="text-gray-600">
