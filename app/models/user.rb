@@ -4,6 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, :confirmable
 
+  validates :full_name, presence: true, length: { in: 3..100 }
+  validate :name_must_be_alphabetic
+
+  before_validation :format_full_name
+
   def admin?
     is_admin
   end
@@ -11,7 +16,7 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :product_rating_and_reviews, dependent: :destroy
-  has_many :add_to_wish_lists
+  has_many :add_to_wish_lists, dependent: :destroy
   has_many :products, through: :add_to_wish_lists
 
   def self.from_omniauth(auth)
@@ -27,6 +32,17 @@ class User < ApplicationRecord
         user.save!
         WelcomeUserMailer.with(user: user).welcome_email.deliver_later
       end
+    end
+  end
+
+  private
+  def format_full_name
+    self.full_name = full_name.squish.titleize if full_name.present?
+  end
+
+  def name_must_be_alphabetic
+    unless full_name =~ /\A[a-zA-Z\s]+\z/
+      errors.add(:full_name, "must contain only alphabetic characters(a-zA-Z)")
     end
   end
 
