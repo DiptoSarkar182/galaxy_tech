@@ -37,7 +37,9 @@ class User < ApplicationRecord
 
   private
   def format_full_name
-    self.full_name = full_name.squish.titleize if full_name.present?
+    if full_name.present?
+      self.full_name = full_name.squish.split.map { |word| word.capitalize }.join(' ')
+    end
   end
 
   def name_must_be_alphabetic

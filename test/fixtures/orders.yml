@@ -4,8 +4,11 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+johns_order:
+  user: john_doe
+  status: "pending"
+  total_price: "19.98"
+  delivery_address: "123 Example St, City"
+  payment_method: "cash_on_delivery"
+  order_number: <%= SecureRandom.uuid %>
+  is_payment_completed: false
