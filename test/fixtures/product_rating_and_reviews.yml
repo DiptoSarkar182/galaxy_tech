@@ -4,9 +4,16 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-johns_product_review:
+johns_product_review_1:
   user: john_doe
-  product: example_product
-  order: johns_order
+  product: example_product_1
+  order: johns_first_order
   rating: "4.5"
-  review: "Great product!"
+  review: "Great first product!"
+
+johns_product_review_2:
+  user: john_doe
+  product: example_product_2
+  order: johns_second_order
+  rating: "3.3"
+  review: "Great second product!"

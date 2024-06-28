@@ -4,6 +4,10 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-example_wish_list:
+example_wish_list_1:
   user: john_doe
-  product: example_product
+  product: example_product_1
+
+example_wish_list_2:
+  user: john_doe
+  product: example_product_2

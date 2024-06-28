@@ -6,5 +6,5 @@
 #
 johns_cart_item:
   cart: johns_cart
-  product: example_product
+  product: example_product_1
   quantity: 1

@@ -4,12 +4,22 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-example_product:
-  name: "Example Product"
+example_product_1:
+  name: "Example Product one"
   price: "9.99"
   quantity: 10
-  brand: "Example Brand"
-  key_features: "Example feature"
-  specification: "Example specification"
-  description: "Example description"
-  component: "Example component"
+  brand: "Example Brand one"
+  key_features: "Example feature one"
+  specification: "Example specification one"
+  description: "Example description one"
+  component: "Example component one"
+
+example_product_2:
+  name: "Example Product two"
+  price: "10.99"
+  quantity: 20
+  brand: "Example Brand two"
+  key_features: "Example feature two"
+  specification: "Example specification two"
+  description: "Example description two"
+  component: "Example component two"
