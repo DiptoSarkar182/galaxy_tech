@@ -4,7 +4,12 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-johns_cart_item:
+johns_cart_item_1:
   cart: johns_cart
   product: example_product_1
   quantity: 1
+
+johns_cart_item_2:
+  cart: johns_cart
+  product: example_product_2
+  quantity: 10

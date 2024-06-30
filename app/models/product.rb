@@ -14,10 +14,10 @@ class Product < ApplicationRecord
   has_one_attached :product_image
 
   has_many :cart_items, dependent: :destroy
-  has_many :order_items
-  has_many :carts, through: :cart_items, dependent: :destroy
+  has_many :order_items, dependent: :destroy
+  has_many :carts, through: :cart_items
   has_many :product_rating_and_reviews, dependent: :destroy
-  has_many :add_to_wish_lists
+  has_many :add_to_wish_lists, dependent: :destroy
   has_many :users, through: :add_to_wish_lists
 
   before_destroy :purge_product_image
