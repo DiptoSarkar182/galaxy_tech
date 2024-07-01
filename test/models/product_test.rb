@@ -108,4 +108,13 @@ class ProductTest < ActiveSupport::TestCase
     end
   end
 
+  test 'product  cannot be saved without timestamps' do
+    product_1 = products(:example_product_1)
+    product_2 = products(:example_product_2)
+    assert_not_nil product_1.created_at
+    assert_not_nil product_1.updated_at
+    assert_not_nil product_2.created_at
+    assert_not_nil product_2.updated_at
+  end
+
 end

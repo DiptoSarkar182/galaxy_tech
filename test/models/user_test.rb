@@ -32,7 +32,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'email should be present' do
     user = User.new(password: 'password123', password_confirmation: 'password123')
-    assert_not user.save, 'Saved the user without an email'
+    assert_not user.save
   end
 
   test "admin? should return false for non-admin user" do
@@ -42,19 +42,19 @@ class UserTest < ActiveSupport::TestCase
 
   test "name must be alphabetic" do
     @user.full_name = "123"
-    assert_not @user.valid?, "Name contains non-alphabetic characters but was still valid"
+    assert_not @user.valid?
   end
 
   test "full_name is formatted before validation" do
     @user.full_name = "  john   doe  "
     @user.valid?
-    assert_equal "John Doe", @user.full_name, "full_name was not properly formatted"
+    assert_equal "John Doe", @user.full_name
   end
 
   test "full_name is titleized before validation" do
     @user.full_name = "john doe"
     @user.valid?
-    assert_equal "John Doe", @user.full_name, "full_name was not properly titleized"
+    assert_equal "John Doe", @user.full_name
   end
 
   test "full_name formatting with mixed case" do
@@ -62,7 +62,7 @@ class UserTest < ActiveSupport::TestCase
     puts "Before validation: #{@user.full_name}"
     @user.valid?
     puts "After validation: #{@user.full_name}"
-    assert_equal "John Doe", @user.full_name, "full_name was not properly titleized and formatted"
+    assert_equal "John Doe", @user.full_name
   end
 
   test 'user has one cart' do
@@ -108,6 +108,12 @@ class UserTest < ActiveSupport::TestCase
     assert_difference 'AddToWishList.count', -user.add_to_wish_lists.count do
       user.destroy
     end
+  end
+
+  test 'user  cannot be saved without timestamps' do
+    user = users(:john_doe)
+    assert_not_nil user.created_at
+    assert_not_nil user.updated_at
   end
 
 end

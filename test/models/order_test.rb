@@ -39,4 +39,42 @@ class OrderTest < ActiveSupport::TestCase
     assert_equal "Great second product!", review_2.review
   end
 
+  test 'order cannot be saved without a user' do
+    order = orders(:johns_first_order)
+    assert_not_nil order.user
+  end
+
+  test 'order saves with default pending status' do
+    order = orders(:johns_first_order)
+    assert_equal "pending", order.status
+  end
+
+  test 'order saves total_price with precision 9 and scale 2' do
+    order = orders(:johns_first_order)
+    order.total_price = 1234567.891
+    assert_equal 1234567.89, order.total_price
+  end
+
+  test 'order saves with default payment method cash on delivery' do
+    order = orders(:johns_first_order)
+    assert_equal "cash_on_delivery", order.payment_method
+  end
+
+  test 'order saves with order number which is random generated uuid' do
+    order = orders(:johns_first_order)
+    assert_not_nil order.order_number
+    assert_match /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i, order.order_number
+  end
+
+  test 'order cannot be saved without timestamps' do
+    order = orders(:johns_first_order)
+    assert_not_nil order.created_at
+    assert_not_nil order.updated_at
+  end
+
+  test 'order saves with default is payment completed false' do
+    order = orders(:johns_first_order)
+    assert_equal false, order.is_payment_completed
+  end
+
 end
