@@ -11,3 +11,19 @@ john_doe:
   confirmed_at: <%= Time.now %>
   is_admin: false
   address: "123 Example St, City"
+
+admin:
+  email: admin.doe@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  full_name: ADMIN
+  confirmed_at: <%= Time.now %>
+  is_admin: true
+  address: "123 Example St, City"
+
+test_admin:
+  email: testadmin@gmail.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  full_name: TEST_ADMIN
+  confirmed_at: <%= Time.now %>
+  is_admin: true
+  address: "Japan"

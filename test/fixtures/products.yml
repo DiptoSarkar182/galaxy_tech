@@ -23,3 +23,13 @@ example_product_2:
   specification: "Example specification two"
   description: "Example description two"
   component: "Example component two"
+
+example_product_3:
+  name: "Example Product Three"
+  price: "12.99"
+  quantity: 15
+  brand: "Example Brand Three"
+  key_features: "Example feature three"
+  specification: "Example specification three"
+  description: "Example description three"
+  component: "Target Component"

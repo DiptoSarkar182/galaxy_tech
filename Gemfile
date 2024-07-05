@@ -86,3 +86,5 @@ gem 'money-open-exchange-rates'
 gem "tailwindcss-rails", "~> 2.6"
 gem "chartkick"
 gem 'groupdate'
+
+gem "rails-controller-testing", "~> 1.0"
