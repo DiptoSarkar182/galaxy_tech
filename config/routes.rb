@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     end
     member do
       patch :change_customer_order_status
+      get :download_order
     end
   end
 

@@ -114,7 +114,10 @@
     <orderEntry type="library" scope="PROVIDED" name="omniauth-rails_csrf_protection (v1.0.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="orm_adapter (v0.5.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="paperclip-cloudinary (v1.3.2, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pdf-core (v0.10.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.5.6, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="prawn (v2.5.0, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="prawn-table (v0.2.2, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="psych (v5.1.2, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="public_suffix (v5.0.5, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="puma (v6.4.2, ruby-3.2.3-p157) [gem]" level="application" />
@@ -151,6 +154,7 @@
     <orderEntry type="library" scope="PROVIDED" name="tailwindcss-rails (v2.6.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.3.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="timeout (v0.4.1, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ttfunk (v1.8.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="turbo-rails (v2.0.5, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo-data (v1.2024.1, ruby-3.2.3-p157) [gem]" level="application" />

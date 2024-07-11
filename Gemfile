@@ -88,3 +88,7 @@ gem "chartkick"
 gem 'groupdate'
 
 gem "rails-controller-testing", "~> 1.0"
+
+gem "prawn", "~> 2.5"
+
+gem "prawn-table", "~> 0.2.2"
