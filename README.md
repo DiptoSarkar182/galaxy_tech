@@ -10,7 +10,8 @@ engine to help you find exactly what you need.
 
 ## Live Demo
 
-You can see a live version of the app **[here](https://galaxy-tech.onrender.com)**.
+You can see a live version of the app **[here](https://galaxy-tech.onrender.com)** and demo video 
+**[here](https://youtu.be/PT0Nb35Ml34)**.
 Please note that the app is hosted on a free tier and may take a moment to load if it has been inactive.
 
 To test the application with an account that has admin privileges, use the following credentials:
