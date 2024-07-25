@@ -3,3 +3,5 @@
 <p>You can confirm your account email through the link below:</p>
 
 <p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<p>This confirmation link will expire in <%= Devise.confirm_within.parts.map { |name, value| "#{value} #{name.to_s.humanize.downcase}" }.to_sentence %> of this email being sent. Please confirm your account before then.</p>
