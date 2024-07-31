@@ -60,6 +60,8 @@ admin dashboard, update users order status from pending orders and view all the 
 - PostgreSQL
 - Devise
 - Active Storage
+- Active Job (Rails default **async**)
+- Solid Cache
 - TailwindCSS
 - Cloudinary
 - Action Mail

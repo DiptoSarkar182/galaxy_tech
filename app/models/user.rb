@@ -20,19 +20,19 @@ class User < ApplicationRecord
   has_many :products, through: :add_to_wish_lists
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
+    user = where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
       user.provider = auth.provider
       user.uid = auth.uid
       user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
-      if auth.provider == 'google_oauth2'
-        user.full_name = auth.info.name
-      end
-      if user.new_record?
-        user.save!
-        WelcomeUserMailer.with(user: user).welcome_email.deliver_later
-      end
+      user.password = Devise.friendly_token[0, 20]
+      user.full_name = auth.info.name if auth.provider == 'google_oauth2'
     end
+
+    is_new_user = user.new_record?
+    user.save! if is_new_user
+    WelcomeUserMailer.with(user: user).welcome_email.deliver_later if is_new_user
+
+    return user, is_new_user
   end
 
   private

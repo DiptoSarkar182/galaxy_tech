@@ -8,6 +8,21 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  protected
+
+  def update_resource(resource, params)
+    if resource.provider == 'google_oauth2'
+      params.delete(:current_password)
+      if params[:password].blank?
+        params.delete(:password)
+        params.delete(:password_confirmation)
+      end
+      resource.update_without_password(params)
+    else
+      super
+    end
+  end
+
   private
 
   def sign_up_params
@@ -16,9 +31,9 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def account_update_params
-    params.require(:user).permit(:full_name, :email,
-                                 :password, :password_confirmation,
-                                 :current_password, :address)
+    permitted_params = [:full_name, :password, :password_confirmation, :current_password, :address]
+    permitted_params << :email unless current_user.provider == 'google_oauth2'
+    params.require(:user).permit(permitted_params)
   end
 
 end

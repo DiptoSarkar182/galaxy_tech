@@ -6,25 +6,27 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
     <% @products.each do |product| %>
       <div class="bg-white rounded-lg shadow-md flex flex-col">
-        <% if product.product_image.attached? %>
-          <div class="aspect-w-16 aspect-h-9">
-            <%= link_to image_tag(product.product_image, class: "object-cover w-full h-full"), product_path(product) %>
-          </div>
+        <% cache product do %>
+          <% if product.product_image.attached? %>
+            <div class="aspect-w-16 aspect-h-9">
+              <%= link_to image_tag(product.product_image, class: "object-cover w-full h-full"), product_path(product) %>
+            </div>
+          <% end %>
+          <div class="p-4 flex flex-col justify-between flex-1">
+            <div class="flex flex-col justify-between">
+              <div>
+                <h2 class="text-xl font-semibold mb-2">
+                  <%= link_to product.name, product_path(product), class: "text-indigo-600 hover:text-indigo-700" %>
+                </h2>
+              </div>
+              <div>
+                <p class="text-gray-700">
+                  <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> USD
+                </p>
+              </div>
+            </div>
+            <div>
         <% end %>
-        <div class="p-4 flex flex-col justify-between flex-1">
-          <div class="flex flex-col justify-between">
-            <div>
-              <h2 class="text-xl font-semibold mb-2">
-                <%= link_to product.name, product_path(product), class: "text-indigo-600 hover:text-indigo-700" %>
-              </h2>
-            </div>
-            <div>
-              <p class="text-gray-700">
-                <%= number_with_delimiter(number_with_precision(product.price, precision: 2), delimiter: ',') %> USD
-              </p>
-            </div>
-          </div>
-          <div>
             <% if user_signed_in? %>
               <turbo-frame id="search_product_by_component_add_inc_dec_<%= product.id %>">
                 <% if current_user && current_user.cart&.products&.include?(product) %>

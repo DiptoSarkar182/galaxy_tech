@@ -62,6 +62,7 @@
     <orderEntry type="library" scope="PROVIDED" name="dotenv (v3.1.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.12.0, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="faker (v3.4.2, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faraday (v2.9.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="faraday-net_http (v3.1.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.16.3, ruby-3.2.3-p157) [gem]" level="application" />
@@ -144,6 +145,7 @@
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v2.3.2, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="selenium-webdriver (v4.21.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="snaky_hash (v2.0.1, ruby-3.2.3-p157) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="solid_cache (v0.7.0, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets (v4.2.1, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sprockets-rails (v3.4.2, ruby-3.2.3-p157) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stimulus-rails (v1.3.3, ruby-3.2.3-p157) [gem]" level="application" />
@@ -208,6 +210,7 @@
         <option value="responders_controller" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
+        <option value="solid_cache:install" />
         <option value="stimulus" />
         <option value="stripe:install" />
         <option value="system_test" />
@@ -253,6 +256,7 @@
         <option value="responders_controller" />
         <option value="scaffold" />
         <option value="scaffold_controller" />
+        <option value="solid_cache:install" />
         <option value="stimulus" />
         <option value="stripe:install" />
         <option value="system_test" />
@@ -320,6 +324,9 @@
     <entry key="config/secrets">
       <value>file://$MODULE_DIR$/../galaxy_tech\config</value>
     </entry>
+    <entry key="config/solid_cache">
+      <value>file://$MODULE_DIR$/../galaxy_tech\config/solid_cache.yml</value>
+    </entry>
     <entry key="db">
       <value>file://$MODULE_DIR$/../galaxy_tech\db</value>
     </entry>
@@ -367,8 +374,7 @@
       <value>file://$MODULE_DIR$/../galaxy_tech\vendor/assets</value>
     </entry>
   </component>
-  <component name="RakeTasksCache-v2" failedReloadsCounter="3">
-    <option name="failedReloadsCounter" value="3" />
+  <component name="RakeTasksCache-v2">
     <option name="myRootTask">
       <RakeTaskImpl id="rake">
         <subtasks>
@@ -561,6 +567,16 @@
           <RakeTaskImpl id="product">
             <subtasks>
               <RakeTaskImpl description="Update product slugs" fullCommand="product:update_slugs" id="update_slugs" />
+            </subtasks>
+          </RakeTaskImpl>
+          <RakeTaskImpl id="solid_cache">
+            <subtasks>
+              <RakeTaskImpl description="Copy over the migration, and set cache" fullCommand="solid_cache:install" id="install" />
+              <RakeTaskImpl id="install">
+                <subtasks>
+                  <RakeTaskImpl description="Copy migrations from solid_cache to application" fullCommand="solid_cache:install:migrations" id="migrations" />
+                </subtasks>
+              </RakeTaskImpl>
             </subtasks>
           </RakeTaskImpl>
           <RakeTaskImpl description="Report code statistics (KLOCs, etc) from the application or engine" fullCommand="stats" id="stats" />

@@ -85,18 +85,20 @@
           <% end %>
         <% end %>
       </div>
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Key Features</h2>
-        <p class="text-gray-600"><%= @product.key_features %></p>
-      </div>
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Specification</h2>
-        <p class="text-gray-600"><%= @product.specification %></p>
-      </div>
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">Description</h2>
-        <p class="text-gray-600"><%= @product.description %></p>
-      </div>
+      <% cache @product do %>
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Key Features</h2>
+          <p class="text-gray-600"><%= @product.key_features %></p>
+        </div>
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Specification</h2>
+          <p class="text-gray-600"><%= @product.specification %></p>
+        </div>
+        <div class="mb-4">
+          <h2 class="text-xl font-semibold text-gray-800 mb-2">Description</h2>
+          <p class="text-gray-600"><%= @product.description %></p>
+        </div>
+      <% end %>
     </div>
   </div>
   <div id="reviews" class="bg-white shadow rounded-lg p-6">
