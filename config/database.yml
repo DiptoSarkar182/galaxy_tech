@@ -87,3 +87,5 @@ production:
   database: galaxy_tech_production
   username: galaxy_tech
   password: <%= ENV["GALAXY_TECH_DATABASE_PASSWORD"] %>
+  sslmode: verify-full
+  sslrootcert: /etc/secrets/ca_certificate.crt
