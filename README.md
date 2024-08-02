@@ -66,6 +66,7 @@ admin dashboard, update users order status from pending orders and view all the 
 - Cloudinary
 - Action Mail
 - Stripe
+- Minitest
 
 ## Screenshots
 
