@@ -1,5 +1,6 @@
 class AddToWishListsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_admin_access
 
   def index
     @wishlist_products = current_user.add_to_wish_lists.map(&:product)
@@ -20,5 +21,13 @@ class AddToWishListsController < ApplicationController
     @product = @add_to_wish_list.product
     @add_to_wish_list.destroy
     render partial: "products/add_to_wishlist_button", locals: { product: @product, wishlist_item: nil }
+  end
+
+  private
+
+  def check_admin_access
+    if current_user.admin?
+      redirect_to root_path, alert: "Access denied!"
+    end
   end
 end
