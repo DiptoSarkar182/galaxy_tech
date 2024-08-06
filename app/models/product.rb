@@ -4,6 +4,12 @@ class Product < ApplicationRecord
     ["name", "price", "component", "brand", "quantity", "created_at", "updated_at"]
   end
 
+  validates :product_image, presence: true
+  validates :name, presence: true
+  validates :price, presence: true
+  validates :quantity, presence: true
+  validates :brand, presence: true
+  validates :component, presence: true
 
   validate :product_image_size_under_limit
   validate :product_image_must_be_image
